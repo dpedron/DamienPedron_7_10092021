@@ -76,107 +76,39 @@ for(let i=0; i<recipes.length; i++){
 /* Dropdown ingredients creation */
 
 let allUniqueIngredients = [...new Set(allIngredients)].sort();
+createFilter(document.querySelector(".dropdown__menu-ingredients"),"dropdown__menu-ingredient", "dropdown__menu-ingredient-tag", allUniqueIngredients);
 
-const menuIngredients = document.querySelector(".dropdown__menu-ingredients");
-const ingredient = document.createElement("p");
-ingredient.classList = "dropdown__menu-ingredient";
-const ingredientTag = document.createElement("a");
-ingredientTag.classList = "dropdown__menu-ingredient-tag tag";
+function createFilter(menuElt, menuStyle, tagStyle, data){
+    const p = document.createElement("p");
+    p.classList = menuStyle;
+    const tag = document.createElement("a");
+    tag.classList = tagStyle + " tag";
 
-for(let i=0; i<allUniqueIngredients.length; i++){
-    ingredientTag.innerHTML = allUniqueIngredients[i];
-    ingredientTag.href = allUniqueIngredients[i];
-    ingredient.appendChild(ingredientTag);
-    menuIngredients.appendChild(ingredient.cloneNode(true));
+    for(let i=0; i<data.length; i++){
+        tag.innerHTML = data[i];
+        tag.href = data[i];
+        p.appendChild(tag);
+        menuElt.appendChild(p.cloneNode(true));
+    }
 }
 
 /* Dropdown appliances creation */
 
 let allUniqueAppliances = [...new Set(allAppliances)].sort();
-
-const menuAppliances = document.querySelector(".dropdown__menu-appliances");
-const appliance = document.createElement("p");
-appliance.classList = "dropdown__menu-appliance";
-const applianceTag = document.createElement("a");
-applianceTag.classList = "dropdown__menu-appliance-tag tag";
-
-for(let i=0; i<allUniqueAppliances.length; i++){
-    applianceTag.innerHTML = allUniqueAppliances[i];
-    applianceTag.href = allUniqueAppliances[i];
-    appliance.appendChild(applianceTag);
-    menuAppliances.appendChild(appliance.cloneNode(true));
-}
+createFilter(document.querySelector(".dropdown__menu-appliances"),"dropdown__menu-appliance", "dropdown__menu-appliance-tag", allUniqueAppliances);
 
 /* Dropdown ustensils creation */
 
 let allUniqueUstensils = [...new Set(allUstensils.flat().sort())];
+createFilter(document.querySelector(".dropdown__menu-ustensils"), "dropdown__menu-ustensil", "dropdown__menu-ustensil-tag", allUniqueUstensils);
 
-const menuUstensils = document.querySelector(".dropdown__menu-ustensils");
-const ustensil = document.createElement("p");
-ustensil.classList = "dropdown__menu-ustensil";
-const ustensilTag = document.createElement("a");
-ustensilTag.classList = "dropdown__menu-ustensil-tag tag";
-
-for(let i=0; i<allUniqueUstensils.length; i++){
-    ustensilTag.innerHTML = allUniqueUstensils[i];
-    ustensilTag.href = allUniqueUstensils[i];
-    ustensil.appendChild(ustensilTag);
-    menuUstensils.appendChild(ustensil.cloneNode(true));
-}
-
-/* Search */
-
-let searchInput = document.querySelectorAll("input");
-let displayIngredients = document.querySelectorAll(".dropdown__menu-ingredient");
-
-searchInput.forEach(element => element.addEventListener('input', inputSearch));
-
-let userSearch = null;
-
-function inputSearch(e){
-    userSearch = e.currentTarget.value.toUpperCase();
-    if(userSearch.length > 2){
-        ingredientSearch();
-        selectedRecipes();
-    }
-}
-
-function ingredientSearch(){
-    for(let i=0; i<allUniqueIngredients.length; i++){
-        if(displayIngredients[i].innerText.toUpperCase().includes(userSearch)){
-            displayIngredients[i].style.display = "block";
-        } else {
-            displayIngredients[i].style.display = "none";
-        }
-    }
-}
-
-/* Show selected recipes */
-
-let cards = document.querySelectorAll(".card");
-function selectedRecipes(){
-    for(let i=0; i<cards.length; i++){
-        if(cards[i].innerText.toUpperCase().includes(userSearch)){
-            cards[i].style.display = "block";
-        } else {
-            cards[i].style.display = "none";
-        }
-    }
-}
-
-/* Tags*/
+/* Tags creation */
 
 const tagList = document.querySelector(".tag-list");
 const tagBtn = document.createElement("button");
 const tagBtnIcon = document.createElement("i");
 tagBtnIcon.classList = "far fa-times-circle";
-
-function removeBtn(){
-    console.log('ok');
-}
-
-const allSelectedTag = document.querySelectorAll(".btn-filter");
-allSelectedTag.forEach(element => element.addEventListener('click', removeBtn));
+let allSelectedTag = [];
 
 function createBtn(e){
     e.preventDefault();
@@ -199,8 +131,109 @@ function createBtn(e){
     e.currentTarget.classList.add("tag-selected");
 }
 
+function removeBtn(){
+    console.log('1')
+}
+
+allSelectedTag.forEach(element => element.addEventListener('click', removeBtn));
+
 const allTags = document.querySelectorAll(".tag");
 allTags.forEach(element => element.addEventListener('click', createBtn));
 
+/* Search */
 
+let userSearch = null;
 
+function search(menuElt, data){
+    for(let i=0; i<data.length; i++){
+        if(menuElt[i].innerText.toUpperCase().includes(userSearch)){
+            menuElt[i].style.display = "block";
+        } else {
+            menuElt[i].style.display = "none";
+        }
+    }
+}
+
+function displayAllFilters(menuElt, data){
+    for(let i=0; i<data.length; i++){
+        menuElt[i].style.display = "block";
+    }
+}
+
+/* Main search */
+
+document.querySelector(".search__input").addEventListener('input', mainSearch);
+
+function mainSearch(e){
+    userSearch = e.currentTarget.value.toUpperCase();
+    if(userSearch.length > 2){
+        search(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);
+        search(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
+        search(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
+    } else {
+        displayAllFilters(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);
+        displayAllFilters(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
+        displayAllFilters(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
+    }
+    selectedRecipes();
+}
+
+/* Tag search */
+
+document.querySelector(".dropdown__input.color1").addEventListener('input', ingredientSearch);
+document.querySelector(".dropdown__input.color2").addEventListener('input', applianceSearch);
+document.querySelector(".dropdown__input.color3").addEventListener('input', ustensilSearch);
+
+/* function tagSearch(e, menuElt, data){
+    userSearch = e.currentTarget.value.toUpperCase();
+    if(userSearch.length > 2){
+        search(menuElt, data);
+        selectedRecipes();
+    } else {
+        displayAll(menuElt, data);
+    }
+
+} */
+
+function ingredientSearch(e){
+    userSearch = e.currentTarget.value.toUpperCase();
+    if(userSearch.length > 2){
+        search(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);
+    } else {
+        displayAllFilters(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);
+    }
+    selectedRecipes();
+}
+
+function applianceSearch(e){
+    userSearch = e.currentTarget.value.toUpperCase();
+    if(userSearch.length > 2){
+        search(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
+    } else {
+        displayAllFilters(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
+    }
+    selectedRecipes();
+}
+
+function ustensilSearch(e){
+    userSearch = e.currentTarget.value.toUpperCase();
+    if(userSearch.length > 2){
+        search(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
+    } else {
+        displayAllFilters(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
+    }
+    selectedRecipes();
+}
+
+/* Show selected recipes */
+
+let cards = document.querySelectorAll(".card");
+function selectedRecipes(){
+    for(let i=0; i<cards.length; i++){
+        if(cards[i].innerText.toUpperCase().includes(userSearch)){
+            cards[i].style.display = "block";
+        } else {
+            cards[i].style.display = "none";
+        }
+    }
+}
