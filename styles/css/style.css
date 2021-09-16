@@ -137,10 +137,14 @@ h1 {
   cursor: pointer;
 }
 
+.dropdown__btn .open {
+  transform: rotate(180deg);
+}
+
 .dropdown__menu {
   display: none;
   width: 100%;
-  z-index: 9999;
+  z-index: 100;
   margin-top: -20px;
   padding: 10px;
   flex-wrap: wrap;
@@ -166,6 +170,11 @@ h1 {
 
 .show-all {
   width: 667px;
+  z-index: 9999;
+}
+
+.search-filter::placeholder {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .color1 {
@@ -242,7 +251,43 @@ h1 {
   font-weight: 400;
   font-family: 'Roboto', sans-serif;
   height: 106px;
-  min-width: 0;
-  max-width: 100%;
+}
+
+@media (max-width: 1420px) {
+  .card {
+    width: 45%;
+  }
+}
+
+@media (max-width: 960px) {
+  body {
+    margin: 50px;
+  }
+  .card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    margin: 20px;
+  }
+  .dropdowns {
+    justify-content: space-between;
+    padding-right: 20px;
+  }
+  .dropdowns .dropdown {
+    margin: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .dropdowns {
+    flex-direction: column;
+  }
+  .dropdowns .dropdown {
+    width: 100%;
+    margin: 5px 0;
+  }
 }
 /*# sourceMappingURL=style.css.map */

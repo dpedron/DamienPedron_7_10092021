@@ -1,4 +1,5 @@
 import recipes from './recipes.js'
+import {filterList, createFilter} from "./_components.js"
 
 /* Cards creation */
 
@@ -41,66 +42,59 @@ for(let i=0; i<recipes.length; i++){
         cardIngredientsList.appendChild(cardIngredients.cloneNode(true))
     }
     cardBody.appendChild(cardDescription);
-    cardDescription.innerText = recipes[i].description;
+    cardDescription.innerText = recipes[i].description;    
+    multiLineEllipsis();
     recipesResults.appendChild(card.cloneNode(true));
 }
 
-/* Dropdown events*/
 
-let dropdowns = document.querySelectorAll('.dropdown__btn');
-
-dropdowns.forEach(dropdown => dropdown.addEventListener('click', show));
-
-function show(e){
-    if(e.currentTarget.nextElementSibling.classList.contains('show')){      // The menu is open...
-        e.currentTarget.nextElementSibling.classList.remove('show');        // ... close him        
-        e.currentTarget.parentElement.classList.remove('show-all');
-    } else {                                                                // The menu is close ...
-        e.currentTarget.nextElementSibling.classList.add('show');           // ... scroll down the menu
-        e.currentTarget.parentElement.classList.add('show-all');  
+    function multiLineEllipsis(){
+        let recipesInstruction = cardDescription.innerText;
+        let counter = 0;
+        while((cardDescription.scrollHeight <= cardDescription.offsetHeight)  && (counter<=recipesInstruction.length)){
+            counter ++;
+            cardDescription.innerText = recipesInstruction.substr(0,  counter) + "...";
+        }
+        if(cardDescription.scrollHeight > cardDescription.offsetHeight){
+            cardDescription.innerText = recipesInstruction.substr(0, counter-1) + "...";
+        }
     }
-}
+    
 
-/* Get all ingredients, appliances and ustensils */
+
+
+/* Dropdown */
+
+let dropdownsBtn = document.querySelectorAll('.dropdown__btn');
+dropdownsBtn.forEach(dropdownBtn => dropdownBtn.addEventListener('click', filterList));
+
+/* Get all ingredients, appliances and ustensils with the first letter in uppercase and others in lowercase */
 
 let allIngredients = [];
 let allAppliances = [];
 let allUstensils = [];
 for(let i=0; i<recipes.length; i++){
-    for(let j=0; j<recipes[i].ingredients.length; j++)
-    allIngredients.push(recipes[i].ingredients[j].ingredient);
-    allAppliances.push(recipes[i].appliance);
-    allUstensils.push(recipes[i].ustensils);
+    allAppliances.push(recipes[i].appliance[0].toUpperCase() + recipes[i].appliance.slice(1));  // Appliances 
+    for(let j=0; j<recipes[i].ingredients.length; j++){                                         // Ingredients
+        allIngredients.push(recipes[i].ingredients[j].ingredient[0].toUpperCase() +  
+        recipes[i].ingredients[j].ingredient.slice(1));
+    }
+    for(let j=0; j<recipes[i].ustensils.length; j++){                                           // Ustensils
+        allUstensils.push(recipes[i].ustensils[j][0].toUpperCase() +  
+        recipes[i].ustensils[j].slice(1));
+    }
 }
 
 /* Dropdown ingredients creation */
 
-let allUniqueIngredients = [...new Set(allIngredients)].sort();
-createFilter(document.querySelector(".dropdown__menu-ingredients"),"dropdown__menu-ingredient", "dropdown__menu-ingredient-tag", allUniqueIngredients);
+let allUniqueIngredients = [...new Set(allIngredients)].sort(); // Sort ingredients by alphabetical order ...
+createFilter(document.querySelector(".dropdown__menu-ingredients"),"dropdown__menu-ingredient", "dropdown__menu-ingredient-tag", allUniqueIngredients); // ... and add them to DOM
 
-function createFilter(menuElt, menuStyle, tagStyle, data){
-    const p = document.createElement("p");
-    p.classList = menuStyle;
-    const tag = document.createElement("a");
-    tag.classList = tagStyle + " tag";
+let allUniqueAppliances = [...new Set(allAppliances)].sort(); // Sort appliances by alphabetical order ...
+createFilter(document.querySelector(".dropdown__menu-appliances"),"dropdown__menu-appliance", "dropdown__menu-appliance-tag", allUniqueAppliances); // ... and add them to DOM
 
-    for(let i=0; i<data.length; i++){
-        tag.innerHTML = data[i];
-        tag.href = data[i];
-        p.appendChild(tag);
-        menuElt.appendChild(p.cloneNode(true));
-    }
-}
-
-/* Dropdown appliances creation */
-
-let allUniqueAppliances = [...new Set(allAppliances)].sort();
-createFilter(document.querySelector(".dropdown__menu-appliances"),"dropdown__menu-appliance", "dropdown__menu-appliance-tag", allUniqueAppliances);
-
-/* Dropdown ustensils creation */
-
-let allUniqueUstensils = [...new Set(allUstensils.flat().sort())];
-createFilter(document.querySelector(".dropdown__menu-ustensils"), "dropdown__menu-ustensil", "dropdown__menu-ustensil-tag", allUniqueUstensils);
+let allUniqueUstensils = [...new Set(allUstensils)].sort(); // Sort ustensils by alphabetical order ...
+createFilter(document.querySelector(".dropdown__menu-ustensils"), "dropdown__menu-ustensil", "dropdown__menu-ustensil-tag", allUniqueUstensils); // ... and add them to DOM
 
 /* Tags creation */
 
@@ -109,36 +103,46 @@ const tagBtn = document.createElement("button");
 const tagBtnIcon = document.createElement("i");
 tagBtnIcon.classList = "far fa-times-circle";
 let allSelectedTag = [];
+let allFilters = [];
 
 function createBtn(e){
     e.preventDefault();
     tagBtn.classList = "btn-filter";
-    if(e.currentTarget.classList.contains("dropdown__menu-ingredient-tag")){
-        tagBtn.classList.add("color1");
+    if(e.currentTarget.classList.contains("dropdown__menu-ingredient-tag")){    
+        tagBtn.classList.add("color1");                                         // Add the ingredient background-color to the tag
     }
-    if(e.currentTarget.classList.contains("dropdown__menu-appliance-tag")){
-        tagBtn.classList.add("color2");
+    if(e.currentTarget.classList.contains("dropdown__menu-appliance-tag")){     
+        tagBtn.classList.add("color2");                                         // Add the appliance background-color to the tag
     }
-    if(e.currentTarget.classList.contains("dropdown__menu-ustensil-tag")){
-        tagBtn.classList.add("color3");
+    if(e.currentTarget.classList.contains("dropdown__menu-ustensil-tag")){      
+        tagBtn.classList.add("color3");                                         // Add the ustensil background-color to the tag
     }
-    if(!e.currentTarget.classList.contains("tag-selected")){
+    if(!e.currentTarget.classList.contains("tag-selected")){   // Create the tag ...
         tagBtn.innerText = e.currentTarget.innerText;
         tagBtn.type = "button";
         tagBtn.appendChild(tagBtnIcon);
         tagList.appendChild(tagBtn.cloneNode(true));
     }
-    e.currentTarget.classList.add("tag-selected");
+    e.currentTarget.classList.add("tag-selected");              // ... declare the tag selected in the dropdown list
+    allFilters = document.querySelectorAll(".tag");
+    allSelectedTag = document.querySelectorAll(".btn-filter");
+    allSelectedTag.forEach(element => element.addEventListener('click', removeBtn));
 }
 
-function removeBtn(){
-    console.log('1')
+function removeBtn(e){
+    e.currentTarget.remove();                                   // Remove the tag ...
+    for(let i=0; i<allFilters.length; i++){
+        if(e.currentTarget.innerText == allFilters[i].innerText){
+            allFilters[i].classList.remove("tag-selected");     // ... declare that the tag is no longer selected in the dropdown list
+        }
+    }
+    allSelectedTag = document.querySelectorAll(".btn-filter");
+    selectedRecipes();
 }
-
-allSelectedTag.forEach(element => element.addEventListener('click', removeBtn));
 
 const allTags = document.querySelectorAll(".tag");
-allTags.forEach(element => element.addEventListener('click', createBtn));
+allTags.forEach(tag => tag.addEventListener('click', createBtn));
+allTags.forEach(tag => tag.addEventListener('click', selectedRecipes));
 
 /* Search */
 
@@ -192,7 +196,6 @@ document.querySelector(".dropdown__input.color3").addEventListener('input', uste
     } else {
         displayAll(menuElt, data);
     }
-
 } */
 
 function ingredientSearch(e){
@@ -235,5 +238,17 @@ function selectedRecipes(){
         } else {
             cards[i].style.display = "none";
         }
+        if(allSelectedTag.length == 0){
+            cards[i].style.display = "block";
+        } else {
+            for(let j=0; j<allSelectedTag.length; j++){
+                if(!cards[i].innerText.toUpperCase().includes(allSelectedTag[j].innerText.toUpperCase())){
+                    cards[i].style.display = "none";
+                } else {
+                    cards[i].style.display = "block";
+                }
+            }
+        }
     }
+    
 }
