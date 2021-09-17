@@ -1,0 +1,11 @@
+- regler pb ouverture dropdown puis recherche dans la barre principale sans fermer
+
+- click out dropdown
+
+- hide/show cards -> main search
+
+- refacto in function tagSearch ??? e undefined
+
+- multiLineEllipsis()
+
+- ameliorer responsiv ?

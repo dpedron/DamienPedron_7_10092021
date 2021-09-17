@@ -5,7 +5,7 @@ import {filterList, createFilter} from "./_components.js"
 
 const recipesResults = document.querySelector(".recipes-results");
 const card = document.createElement("div");
-card.classList = "card";
+card.classList = "card display-recipe";
 const cardImg = document.createElement("div");
 cardImg.classList = "card__img";
 const cardBody = document.createElement("div");
@@ -43,12 +43,10 @@ for(let i=0; i<recipes.length; i++){
     }
     cardBody.appendChild(cardDescription);
     cardDescription.innerText = recipes[i].description;    
-    multiLineEllipsis();
     recipesResults.appendChild(card.cloneNode(true));
 }
 
-
-    function multiLineEllipsis(){
+/* function multiLineEllipsis(){
         let recipesInstruction = cardDescription.innerText;
         let counter = 0;
         while((cardDescription.scrollHeight <= cardDescription.offsetHeight)  && (counter<=recipesInstruction.length)){
@@ -58,10 +56,7 @@ for(let i=0; i<recipes.length; i++){
         if(cardDescription.scrollHeight > cardDescription.offsetHeight){
             cardDescription.innerText = recipesInstruction.substr(0, counter-1) + "...";
         }
-    }
-    
-
-
+    } */
 
 /* Dropdown */
 
@@ -73,6 +68,7 @@ dropdownsBtn.forEach(dropdownBtn => dropdownBtn.addEventListener('click', filter
 let allIngredients = [];
 let allAppliances = [];
 let allUstensils = [];
+
 for(let i=0; i<recipes.length; i++){
     allAppliances.push(recipes[i].appliance[0].toUpperCase() + recipes[i].appliance.slice(1));  // Appliances 
     for(let j=0; j<recipes[i].ingredients.length; j++){                                         // Ingredients
@@ -130,10 +126,14 @@ function createBtn(e){
 }
 
 function removeBtn(e){
+    let allCards = document.querySelectorAll(".card");
     e.currentTarget.remove();                                   // Remove the tag ...
     for(let i=0; i<allFilters.length; i++){
         if(e.currentTarget.innerText == allFilters[i].innerText){
             allFilters[i].classList.remove("tag-selected");     // ... declare that the tag is no longer selected in the dropdown list
+            for(let j=0; j<allCards.length; j++){
+                allCards[j].classList.add("display-recipe");
+            }
         }
     }
     allSelectedTag = document.querySelectorAll(".btn-filter");
@@ -149,11 +149,20 @@ allTags.forEach(tag => tag.addEventListener('click', selectedRecipes));
 let userSearch = null;
 
 function search(menuElt, data){
+    let nbResult = 0;
     for(let i=0; i<data.length; i++){
         if(menuElt[i].innerText.toUpperCase().includes(userSearch)){
             menuElt[i].style.display = "block";
+            nbResult ++;
         } else {
             menuElt[i].style.display = "none";
+        }
+        if(nbResult > 0){
+            menuElt[i].parentElement.classList.add('show');
+            menuElt[i].parentElement.parentElement.classList.add('show-all');
+        } else {
+            menuElt[i].parentElement.classList.remove('show');
+            menuElt[i].parentElement.parentElement.classList.remove('show-all');
         }
     }
 }
@@ -161,6 +170,8 @@ function search(menuElt, data){
 function displayAllFilters(menuElt, data){
     for(let i=0; i<data.length; i++){
         menuElt[i].style.display = "block";
+        menuElt[i].parentElement.classList.remove('show');
+        menuElt[i].parentElement.parentElement.classList.remove('show-all');
     }
 }
 
@@ -230,25 +241,21 @@ function ustensilSearch(e){
 
 /* Show selected recipes */
 
-let cards = document.querySelectorAll(".card");
 function selectedRecipes(){
-    for(let i=0; i<cards.length; i++){
-        if(cards[i].innerText.toUpperCase().includes(userSearch)){
-            cards[i].style.display = "block";
-        } else {
-            cards[i].style.display = "none";
-        }
+    let allCards = document.querySelectorAll(".card");
+    for(let i=0; i<allCards.length; i++){        
         if(allSelectedTag.length == 0){
-            cards[i].style.display = "block";
-        } else {
-            for(let j=0; j<allSelectedTag.length; j++){
-                if(!cards[i].innerText.toUpperCase().includes(allSelectedTag[j].innerText.toUpperCase())){
-                    cards[i].style.display = "none";
-                } else {
-                    cards[i].style.display = "block";
-                }
-            }
+            allCards[i].style.display = "block";
+            allCards[i].classList.add("display-recipe");
         }
-    }
-    
+        for(let j=0; j< allSelectedTag.length; j++){
+            if(allCards[i].innerText.toUpperCase().includes(allSelectedTag[j].innerText.toUpperCase()) && allCards[i].classList.contains("display-recipe")){
+                allCards[i].style.display = "block";
+                allCards[i].classList.add("display-recipe");
+            } else {
+                allCards[i].style.display = "none";
+                allCards[i].classList.remove("display-recipe");                
+            }
+        }        
+    }    
 }
