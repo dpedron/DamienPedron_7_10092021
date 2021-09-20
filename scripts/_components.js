@@ -1,3 +1,5 @@
+export {filterList, createFilter};
+
 function filterList(e){
     if(e.currentTarget.nextElementSibling.classList.contains('show')){      // The menu is open...
         e.currentTarget.nextElementSibling.classList.remove('show');        // ... close him ...       
@@ -27,5 +29,3 @@ function createFilter(menuElt, menuStyle, tagStyle, data){ // Create all filters
         menuElt.appendChild(p.cloneNode(true));
     }
 }
-
-export {filterList, createFilter};

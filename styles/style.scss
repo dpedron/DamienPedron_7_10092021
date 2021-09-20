@@ -249,20 +249,62 @@ h1{
         margin: 20px;
     }
     .dropdowns{
-        justify-content: space-between;
         padding-right: 20px;
         .dropdown{
-            margin: 0;
+            min-width: 140px;
+            &__menu-ingredient{
+                width: 100%;
+            }
         }
     }
 }
 
 @media (max-width: 576px){
+    .search{
+        margin-bottom: 15px;
+        &__input{
+            height: 40px;
+            font-size: 0.8em;
+            padding-left: 10px;
+        }
+        &__logo{
+            top: 12px;
+            right: 10px;
+            .fa-search{
+                font-size: 20px;
+            }
+        }
+    }
+
     .dropdowns{
-        flex-direction: column;
+        margin: 0 -10px;
         .dropdown{
-            width: 100%;
-            margin: 5px 0;
+            min-width: 75px;
+            max-width: 120px;
+            height: 45px;
+            margin-left: 10px;
+            margin-right: 20px;
+            &__input{
+                padding: 0 0 0 10px;
+                font-size: 0.75em;
+                font-weight: 600;
+            }
+            &__btn{
+                font-size: 12px;
+                padding: 0 5px;
+                height: 100%;
+            }
+            &__menu{
+                font-size: 12px;
+                margin-top: -5px;
+                padding: 10px;
+                flex-direction: column;
+                &-ingredient, &-appliance, &-ustensil{
+                    width: 100%;      
+                    padding: 5px 0;
+                    text-align: center;
+                }
+            }
         }
     }
 }

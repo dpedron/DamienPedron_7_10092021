@@ -2,10 +2,14 @@
 
 - click out dropdown
 
-- hide/show cards -> main search
-
 - refacto in function tagSearch ??? e undefined
 
 - multiLineEllipsis()
 
 - ameliorer responsiv ?
+
+- 404 page git
+
+- overflow placeholder
+
+- mise à jour des filtres

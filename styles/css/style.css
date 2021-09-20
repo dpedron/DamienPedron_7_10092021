@@ -273,21 +273,62 @@ h1 {
     margin: 20px;
   }
   .dropdowns {
-    justify-content: space-between;
     padding-right: 20px;
   }
   .dropdowns .dropdown {
-    margin: 0;
+    min-width: 140px;
+  }
+  .dropdowns .dropdown__menu-ingredient {
+    width: 100%;
   }
 }
 
 @media (max-width: 576px) {
+  .search {
+    margin-bottom: 15px;
+  }
+  .search__input {
+    height: 40px;
+    font-size: 0.8em;
+    padding-left: 10px;
+  }
+  .search__logo {
+    top: 12px;
+    right: 10px;
+  }
+  .search__logo .fa-search {
+    font-size: 20px;
+  }
   .dropdowns {
-    flex-direction: column;
+    margin: 0 -10px;
   }
   .dropdowns .dropdown {
+    min-width: 75px;
+    max-width: 120px;
+    height: 45px;
+    margin-left: 10px;
+    margin-right: 20px;
+  }
+  .dropdowns .dropdown__input {
+    padding: 0 0 0 10px;
+    font-size: 0.75em;
+    font-weight: 600;
+  }
+  .dropdowns .dropdown__btn {
+    font-size: 12px;
+    padding: 0 5px;
+    height: 100%;
+  }
+  .dropdowns .dropdown__menu {
+    font-size: 12px;
+    margin-top: -5px;
+    padding: 10px;
+    flex-direction: column;
+  }
+  .dropdowns .dropdown__menu-ingredient, .dropdowns .dropdown__menu-appliance, .dropdowns .dropdown__menu-ustensil {
     width: 100%;
-    margin: 5px 0;
+    padding: 5px 0;
+    text-align: center;
   }
 }
 /*# sourceMappingURL=style.css.map */
