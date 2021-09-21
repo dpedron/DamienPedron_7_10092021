@@ -189,28 +189,32 @@ h1{
         height: 178px;
         background-color: #C7BEBE;
     }
-    &__body{    
-        padding: 20px;
-        height: 186px;
+    &__body{ 
+        line-height: 13px;   
+        padding: 10px 20px;
+        height: 176px;
         display: grid;
         grid-template-areas: 
-        "a b"
+        "a a"
         "c d";
         grid-template-columns: 1fr 1fr;
+        grid-template-rows: 62px 109px;
         &-title{
             grid-area: a;
             font: 1.125em;
-            margin-bottom: 20px;
+            padding: 20px 0;
+            max-width: 250px;
         }
         &-time{
-            grid-area: b;
+            grid-area: a;
             font-size: 1.125em;
             font-weight: 700;
             text-align: right;
-            margin-bottom: 20px;
+            padding: 20px 0;
         }
         &-list-ingredients{
             grid-area: c;
+            padding-right: 10px;
         }
         &-ingredients{
             font-size: 0.75em;
@@ -260,12 +264,18 @@ h1{
 }
 
 @media (max-width: 576px){
+    body{
+        margin: 10px;
+    }
     .search{
         margin-bottom: 15px;
         &__input{
             height: 40px;
             font-size: 0.8em;
-            padding-left: 10px;
+            padding: 0 50px 0 10px;
+            &[placeholder]{                
+                text-overflow:ellipsis;
+            }
         }
         &__logo{
             top: 12px;

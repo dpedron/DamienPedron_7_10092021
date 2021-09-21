@@ -1,15 +1,9 @@
-- 404 page git
+- refacto function tagSearch ??? e undefined
 
-- refacto in function tagSearch ??? e undefined
-
-- multiLineEllipsis()
-
-- mise à jour des filtres
+- multiLineEllipsis() temps de chargement
 
 - regler pb ouverture dropdown puis recherche dans la barre principale sans fermer
 
 - click out dropdown
 
 - ameliorer responsiv 
-
-- overflow placeholder

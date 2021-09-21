@@ -211,29 +211,33 @@ h1 {
 }
 
 .card__body {
-  padding: 20px;
-  height: 186px;
+  line-height: 13px;
+  padding: 10px 20px;
+  height: 176px;
   display: grid;
-  grid-template-areas: "a b" "c d";
+  grid-template-areas: "a a" "c d";
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 62px 109px;
 }
 
 .card__body-title {
   grid-area: a;
   font: 1.125em;
-  margin-bottom: 20px;
+  padding: 20px 0;
+  max-width: 250px;
 }
 
 .card__body-time {
-  grid-area: b;
+  grid-area: a;
   font-size: 1.125em;
   font-weight: 700;
   text-align: right;
-  margin-bottom: 20px;
+  padding: 20px 0;
 }
 
 .card__body-list-ingredients {
   grid-area: c;
+  padding-right: 10px;
 }
 
 .card__body-ingredients {
@@ -284,13 +288,19 @@ h1 {
 }
 
 @media (max-width: 576px) {
+  body {
+    margin: 10px;
+  }
   .search {
     margin-bottom: 15px;
   }
   .search__input {
     height: 40px;
     font-size: 0.8em;
-    padding-left: 10px;
+    padding: 0 50px 0 10px;
+  }
+  .search__input[placeholder] {
+    text-overflow: ellipsis;
   }
   .search__logo {
     top: 12px;
