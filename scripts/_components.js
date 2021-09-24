@@ -1,17 +1,22 @@
 function filterList(e){
     let dropdownButton = e.currentTarget;
-    if(dropdownButton.parentElement.classList.contains('show-all')){      // The menu is open...
-        dropdownButton.nextElementSibling.classList.remove('show');        // ... close him ...       
-        dropdownButton.parentElement.classList.remove('show-all');         // ... tighten the dropdown ...
-        dropdownButton.firstElementChild.classList.remove('open');         // ... the arrow point down ...
-        dropdownButton.previousElementSibling.classList.remove('search-filter'); // ... change placeholder color ...
-        e.currentTarget.previousElementSibling.placeholder = e.currentTarget.previousElementSibling.placeholder.substr(13)[0].toUpperCase() + e.currentTarget.previousElementSibling.placeholder.substr(13).slice(1) + "s"; // ... change placeholder text ...
-    } else {                                                                // The menu is close ...
-        dropdownButton.nextElementSibling.classList.add('show');           // ... scroll down the menu ...
-        dropdownButton.parentElement.classList.add('show-all');            // ... widen the dropdown ...
-        dropdownButton.firstElementChild.classList.add('open');            // ... the arrow point up ...
-        dropdownButton.previousElementSibling.classList.add('search-filter'); // ... change placeholder color ...
-        e.currentTarget.previousElementSibling.placeholder = "Recherche un " + e.currentTarget.previousElementSibling.placeholder[0].toLowerCase() + e.currentTarget.previousElementSibling.placeholder.slice(1, -1);   // ... change placeholder text ...
+    let dropdown = dropdownButton.parentElement;
+    let dropdownArrow = dropdownButton.firstElementChild;
+    let dropdownTitle = dropdownButton.previousElementSibling;
+    let dropdownInput = dropdownButton.previousElementSibling.previousElementSibling;
+    let dropdownList = dropdownButton.nextElementSibling;
+    if(dropdown.classList.contains('show-all')){            // The menu is open...
+        dropdownList.classList.remove('show');                              // ... close him ...       
+        dropdown.classList.remove('show-all');                              // ... tighten the dropdown ...
+        dropdownArrow.classList.remove('open');                             // ... the arrow point down ...
+        dropdownTitle.style.display = "block";                              // ... show input tilte ...
+        dropdownInput.classList.remove('search-filter');                    // ... remove placeholder
+    } else {                                              // The menu is close ...
+        dropdownList.classList.add('show');                                 // ... scroll down the menu ...
+        dropdown.classList.add('show-all');                                 // ... widen the dropdown ...
+        dropdownArrow.classList.add('open');                                // ... the arrow point up ...
+        dropdownTitle.style.display = "none";                               // ... remove input title ...
+        dropdownInput.classList.add('search-filter');                       // ... show placeholder
     }
 }
 
@@ -33,7 +38,7 @@ function createFilter(menuElt, menuStyle, tagStyle, data){ // Create all filters
 
 /* Tag button */
 
-function createBtn(e){                                                              // Create tag button when the user select a filter
+function createBtn(e){  // Create tag button when the user select a filter
     e.preventDefault();
     const tagBtn = document.createElement("button");
     const tagBtnIcon = document.createElement("i");
@@ -49,24 +54,25 @@ function createBtn(e){                                                          
     if(e.currentTarget.classList.contains("dropdown__menu-ustensil-tag")){      
         tagBtn.classList.add("color3");                                         // Add the ustensil background-color to the tag
     }
-    if(!e.currentTarget.classList.contains("tag-selected")){   // Create the tag ...
+    if(!e.currentTarget.classList.contains("tag-selected")){                    // Create the tag ...
         tagBtn.innerText = e.currentTarget.innerText;
         tagBtn.type = "button";
         tagBtn.appendChild(tagBtnIcon);
         tagList.appendChild(tagBtn.cloneNode(true));
     }
-    e.currentTarget.classList.add("tag-selected");              // ... declare the tag selected in the dropdown list 
+    e.currentTarget.classList.add("tag-selected");                              // ... declare the tag selected in the dropdown list 
     allFilters = document.querySelectorAll(".tag");
     allSelectedTag = document.querySelectorAll(".btn-filter");
     allSelectedTag.forEach(element => element.addEventListener('click', removeBtn));
+    e.currentTarget.parentElement.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.value = "";
 }
 
 function removeBtn(e){
     let allCards = document.querySelectorAll(".card");
-    e.currentTarget.remove();                                              // Remove the tag ...
+    e.currentTarget.remove();                                               // Remove the tag ...
     for(let i=0; i<allFilters.length; i++){
         if(e.currentTarget.innerText == allFilters[i].innerText){
-            allFilters[i].classList.remove("tag-selected");             // ... the tag is no longer selected in the dropdown list
+            allFilters[i].classList.remove("tag-selected");                 // ... the tag is no longer selected in the dropdown list
             for(let j=0; j<allCards.length; j++){
                     allCards[j].classList.add("display-recipe");
             }
@@ -82,9 +88,9 @@ function selectedRecipes(){
     let allCards = document.querySelectorAll(".card");
     let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
     for(let i=0; i<allCardsDisplayed.length; i++){        
-        if(allSelectedTag.length == 0){                     // No tag selected ...
-            allCards[i].style.display = "block";            // ... display all cards ...
-            allCards[i].classList.add("display-recipe");    // ... select them
+        if(allSelectedTag.length == 0){                                 // No tag selected ...
+            allCards[i].style.display = "block";                        // ... display all cards ...
+            allCards[i].classList.add("display-recipe");                // ... select them
         }
         for(let j=0; j<allSelectedTag.length; j++){
             if(allCardsDisplayed[i].innerText.toUpperCase().includes(allSelectedTag[j].innerText.toUpperCase())){      // The selected tag match with one displayed card or more ...
@@ -118,5 +124,18 @@ function filterDisplay(){
                 allTags[i].parentElement.style.display = "none";
             }
         }
+    }
+}	
+
+function multiLineEllipsis(desc){
+    let recipesInstruction = desc.innerText;
+    desc.innerText = "";
+    let counter = 0;
+    while((desc.scrollHeight <= desc.offsetHeight)  && (counter<=recipesInstruction.length)){
+        counter ++;
+        desc.innerText = recipesInstruction.substring(0,  counter) + "...";
+    }
+    if(desc.scrollHeight > desc.offsetHeight){
+        desc.innerText = recipesInstruction.substring(0, counter-1) + "...";
     }
 }

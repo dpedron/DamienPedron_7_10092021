@@ -53,25 +53,12 @@ function init(){
 			cardBody.appendChild(cardDescription);
 			cardDescription.innerText = recipes[i].description;    
 			recipesResults.appendChild(card.cloneNode(true));
+			console.log(cardDescription.scrollHeight)
 	}
 
 	document.querySelectorAll(".card__body-description").forEach(function(desc){
 		multiLineEllipsis(desc);
 	  });
-	
-
-	function multiLineEllipsis(desc){
-		let recipesInstruction = desc.innerText;
-		desc.innerText = "";
-		let counter = 0;
-		while((desc.scrollHeight <= desc.offsetHeight)  && (counter<=recipesInstruction.length)){
-			counter ++;
-			desc.innerText = recipesInstruction.substring(0,  counter) + "...";
-		}
-		if(desc.scrollHeight > desc.offsetHeight){
-			desc.innerText = recipesInstruction.substring(0, counter-1) + "...";
-		}
-	}
 
 	/* Dropdown */
 
@@ -114,21 +101,21 @@ function init(){
 	let userSearch = null;
 
 	function searchWithFilter(menuElt, data){
-		let nbResult = 0;                                                    // Number of filter found by search
+		let nbResult = 0;                                                   	// Number of filter found by search
 		for(let i=0; i<data.length; i++){
-				if(menuElt[i].innerText.toUpperCase().includes(userSearch)){    // The characters typed by the user match with some filter ...
-						menuElt[i].style.display = "block";                         // ... display them ...
-						nbResult ++;                                                // ... increment the number of results
-				} else {                                                        // No match ...
-						menuElt[i].style.display = "none";                          // ... hide the filter
-				}
-				if(nbResult > 0){                                                           // 1 or more filter match ...
-						menuElt[i].parentElement.classList.add('show');                         // ... open the dropdown and show them ...
-						menuElt[i].parentElement.parentElement.classList.add('show-all');
-				} else {                                                                    // No filter match ...  
-						menuElt[i].parentElement.classList.remove('show');                      // ... close dropdown
-						menuElt[i].parentElement.parentElement.classList.remove('show-all');
-				}
+			if(menuElt[i].innerText.toUpperCase().includes(userSearch)){    	// The characters typed by the user match with some filter ...
+					menuElt[i].style.display = "block";                         // ... display them ...
+					nbResult ++;                                                // ... increment the number of results
+			} else {                                                        	// No match ...
+					menuElt[i].style.display = "none";                          // ... hide the filter
+			}
+			if(nbResult > 0){                                                           // 1 or more filter match ...
+					menuElt[i].parentElement.classList.add('show');                         // ... open the dropdown and show them ...
+					menuElt[i].parentElement.parentElement.classList.add('show-all');
+			} else {                                                                    // No filter match ...  
+					menuElt[i].parentElement.classList.remove('show');                      // ... close dropdown
+					menuElt[i].parentElement.parentElement.classList.remove('show-all');
+			}
 		}
 	}
 
@@ -143,42 +130,43 @@ function init(){
 	/* Main search */
 
 	document.querySelector(".search__input").addEventListener('input', mainSearch);
-	document.querySelector(".search__input").addEventListener('focusout', () => {
-		mainSearch;
-		document.querySelector(".search__input").value = "";
-	});
 
 	function mainSearch(e){
+		let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
 		userSearch = e.currentTarget.value.toUpperCase();
 		selectedRecipes();
 		if(userSearch.length > 2){
-				searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);
-				searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
-				searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
-				directSearch(e);
+			searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);
+			searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
+			searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
+			for(let i=0; i< allCardsDisplayed.length; i++){
+				if(allCardsDisplayed[i].innerText.toUpperCase().includes(userSearch)){      // The user search match with one displayed card or more ...
+						allCardsDisplayed[i].style.display = "block";            			// ... display cards who match ...
+				} else {
+						allCardsDisplayed[i].style.display = "none";             			// ... hide others            
+				}
+			}  
 		} else {
-				displayAllFilters(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);
-				displayAllFilters(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
-				displayAllFilters(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
+			displayAllFilters(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);
+			displayAllFilters(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
+			displayAllFilters(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
 		}
-	}
-
-	/* Direct search */
-
-	function directSearch(e){
-		let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
-		userSearch = e.currentTarget.value.toUpperCase();
-		for(let i=0; i< allCardsDisplayed.length; i++){
-			if(allCardsDisplayed[i].innerText.toUpperCase().includes(userSearch)){      // The selected tag match with one displayed card or more ...
-					allCardsDisplayed[i].style.display = "block";            // ... display cards who match ...
-			} else {
-					allCardsDisplayed[i].style.display = "none";             // ... hide other            
-			}
-		}        
 	}
 
 	/* Tag search */
 
+	document.querySelectorAll(".dropdown__input-title").forEach(element => element.addEventListener('click', (e) => {
+		e.currentTarget.style.display = "none";
+		e.currentTarget.previousElementSibling.focus();
+	}));
+	document.querySelectorAll(".dropdown__input").forEach(element => element.addEventListener('focus', () => {
+			element.nextElementSibling.style.display = "none";
+	}));
+	document.querySelectorAll(".dropdown__input").forEach(element => element.addEventListener('focusout', () => {
+		if(element.value == "" && !element.parentElement.classList.contains("show-all")){
+			element.nextElementSibling.style.display = "block";
+		}
+	}));
 	document.querySelector(".dropdown__input.color1").addEventListener('input', ingredientSearch);
 	document.querySelector(".dropdown__input.color2").addEventListener('input', applianceSearch);
 	document.querySelector(".dropdown__input.color3").addEventListener('input', ustensilSearch);
@@ -197,31 +185,31 @@ function init(){
 
 	function ingredientSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
+		selectedRecipes();
 		if(userSearch.length > 0){
 				searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);
 		} else {
 				displayAllFilters(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);
 		}
-		selectedRecipes();
 	}
 
 	function applianceSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
+		selectedRecipes();
 		if(userSearch.length > 0){
 				searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
 		} else {
 				displayAllFilters(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
 		}
-		selectedRecipes();
 	}
 
 	function ustensilSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
+		selectedRecipes();
 		if(userSearch.length > 0){
 				searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
 		} else {
 				displayAllFilters(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
 		}
-		selectedRecipes();
 	}
 }

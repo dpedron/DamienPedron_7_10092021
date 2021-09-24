@@ -7,3 +7,5 @@
 - click out dropdown
 
 - ameliorer responsiv 
+
+- e.currentTarget.parentElement.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.value = "";
