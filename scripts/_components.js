@@ -36,9 +36,9 @@ function createFilter(menuElt, menuStyle, tagStyle, data){ // Create all filters
     }
 }
 
-/* Tag button */
+/* Tag */
 
-function createBtn(e){  // Create tag button when the user select a filter
+function createTag(e){  // Create tag button when the user select a filter
     e.preventDefault();
     const tagBtn = document.createElement("button");
     const tagBtnIcon = document.createElement("i");
@@ -63,11 +63,12 @@ function createBtn(e){  // Create tag button when the user select a filter
     e.currentTarget.classList.add("tag-selected");                              // ... declare the tag selected in the dropdown list 
     allFilters = document.querySelectorAll(".tag");
     allSelectedTag = document.querySelectorAll(".btn-filter");
-    allSelectedTag.forEach(element => element.addEventListener('click', removeBtn));
+    allSelectedTag.forEach(element => element.addEventListener('click', removeTag));
     e.currentTarget.parentElement.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.value = "";
+    filterList();
 }
 
-function removeBtn(e){
+function removeTag(e){
     let allCards = document.querySelectorAll(".card");
     e.currentTarget.remove();                                               // Remove the tag ...
     for(let i=0; i<allFilters.length; i++){
@@ -103,7 +104,6 @@ function selectedRecipes(){
     }
     filterDisplay(); 
 }
-
 
 function filterDisplay(){
     const allTags = document.querySelectorAll(".tag");

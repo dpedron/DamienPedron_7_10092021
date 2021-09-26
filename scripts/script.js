@@ -53,12 +53,11 @@ function init(){
 			cardBody.appendChild(cardDescription);
 			cardDescription.innerText = recipes[i].description;    
 			recipesResults.appendChild(card.cloneNode(true));
-			console.log(cardDescription.scrollHeight)
 	}
 
 	document.querySelectorAll(".card__body-description").forEach(function(desc){
 		multiLineEllipsis(desc);
-	  });
+	});
 
 	/* Dropdown */
 
@@ -93,7 +92,7 @@ function init(){
 	/* Tags creation */
 
 	const allTags = document.querySelectorAll(".tag");
-	allTags.forEach(tag => tag.addEventListener('click', createBtn));
+	allTags.forEach(tag => tag.addEventListener('click', createTag));
 	allTags.forEach(tag => tag.addEventListener('click', selectedRecipes));
 
 	/* Search */
@@ -103,7 +102,7 @@ function init(){
 	function searchWithFilter(menuElt, data){
 		let nbResult = 0;                                                   	// Number of filter found by search
 		for(let i=0; i<data.length; i++){
-			if(menuElt[i].innerText.toUpperCase().includes(userSearch)){    	// The characters typed by the user match with some filter ...
+			if(menuElt[i].innerText.toUpperCase().includes(userSearch)){    	// Typed characters match with some filter ...
 					menuElt[i].style.display = "block";                         // ... display them ...
 					nbResult ++;                                                // ... increment the number of results
 			} else {                                                        	// No match ...
