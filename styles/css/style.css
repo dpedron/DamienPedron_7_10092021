@@ -61,7 +61,7 @@ h1 {
   font-size: 32px;
 }
 
-.tag-list {
+.filter-list {
   display: flex;
   flex-wrap: wrap;
 }
@@ -164,8 +164,7 @@ h1 {
   padding: 5px;
 }
 
-.dropdown__menu-ingredient-tag, .dropdown__menu-appliance-tag, .dropdown__menu-ustensil-tag {
-  padding: 5px;
+.dropdown__menu-ingredient-filter, .dropdown__menu-appliance-filter, .dropdown__menu-ustensil-filter {
   color: white;
   text-decoration: none;
 }

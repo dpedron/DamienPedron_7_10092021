@@ -1,7 +1,5 @@
 - function filterList(dropdown, dropdownArrow, dropdownTitle, dropdownInput, dropdownList)
 
-- refacto function tagSearch ??? e undefined
-
 - multiLineEllipsis() temps de chargement + responsiv
 
 - regler pb ouverture dropdown puis recherche dans la barre principale sans fermer
