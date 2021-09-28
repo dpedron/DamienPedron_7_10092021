@@ -6,6 +6,9 @@ window.onload = function(){
 };
 
 function init(){
+
+	/* Recipes cards DOM */
+
 	const recipesResults = document.querySelector(".recipes-results");
 	const card = document.createElement("div");
 	card.classList = "card display-recipe";
@@ -56,7 +59,20 @@ function init(){
 		multiLineEllipsis(desc);
 	});
 
-	/* Get all ingredients, appliances and ustensils with the first letter in uppercase and others in lowercase */
+	function multiLineEllipsis(desc){
+		let recipesInstruction = desc.innerText;
+		desc.innerText = "";
+		let counter = 0;
+		while((desc.scrollHeight <= desc.offsetHeight)  && (counter<=recipesInstruction.length)){
+			counter ++;
+			desc.innerText = recipesInstruction.substring(0,  counter) + "...";
+		}
+		if(desc.scrollHeight > desc.offsetHeight){
+			desc.innerText = recipesInstruction.substring(0, counter-1) + "...";
+		}
+	}
+
+	/* Get all filters (ingredients, appliances and ustensils) with the first letter in uppercase and others in lowercase ... */
 
 	for(let i=0; i<recipes.length; i++){
 		allAppliances.push(recipes[i].appliance[0].toUpperCase() + recipes[i].appliance.slice(1));  // Appliances 
@@ -68,24 +84,41 @@ function init(){
 				allUstensils.push(recipes[i].ustensils[j][0].toUpperCase() +  
 				recipes[i].ustensils[j].slice(1));
 		}
-}
+	}
 
-	/* Dropdown ingredients creation */
+	/* ... sort them by alphabetical order */
 
-	let allUniqueIngredients = [...new Set(allIngredients)].sort(); // Sort ingredients by alphabetical order ...
-	createFilter(document.querySelector(".dropdown__menu-ingredients"),"dropdown__menu-ingredient", "dropdown__menu-ingredient-filter", allUniqueIngredients); // ... and add them to DOM
+	let allUniqueIngredients = [...new Set(allIngredients)].sort();
+	let allUniqueAppliances = [...new Set(allAppliances)].sort();
+	let allUniqueUstensils = [...new Set(allUstensils)].sort();
 
-	let allUniqueAppliances = [...new Set(allAppliances)].sort(); // Sort appliances by alphabetical order ...
-	createFilter(document.querySelector(".dropdown__menu-appliances"),"dropdown__menu-appliance", "dropdown__menu-appliance-filter", allUniqueAppliances); // ... and add them to DOM
+	/* Filters DOM*/
 
-	let allUniqueUstensils = [...new Set(allUstensils)].sort(); // Sort ustensils by alphabetical order ...
-	createFilter(document.querySelector(".dropdown__menu-ustensils"), "dropdown__menu-ustensil", "dropdown__menu-ustensil-filter", allUniqueUstensils); // ... and add them to DOM
+	function createFilter(menuElt, menuStyle, filterStyle, data){ // Create all filters for the dropdowns
+		const p = document.createElement("p");
+		p.classList = menuStyle + " dropdown__menu-filter";
+		const filter = document.createElement("a");
+		filter.classList = filterStyle + " filter filter-displayed";
 
-	/* Tags creation */
+		for(let i=0; i<data.length; i++){
+			filter.innerHTML = data[i];
+			filter.href = data[i];
+			p.appendChild(filter);
+			menuElt.appendChild(p.cloneNode(true));
+		}
+	}
+	
+	createFilter(document.querySelector(".dropdown__menu-ingredients"),"dropdown__menu-ingredient", "dropdown__menu-ingredient-filter", allUniqueIngredients);	
+
+	createFilter(document.querySelector(".dropdown__menu-appliances"),"dropdown__menu-appliance", "dropdown__menu-appliance-filter", allUniqueAppliances);
+
+	createFilter(document.querySelector(".dropdown__menu-ustensils"), "dropdown__menu-ustensil", "dropdown__menu-ustensil-filter", allUniqueUstensils);
+
+	/* Tags */
 
 	const allFilters = document.querySelectorAll(".filter");
-	allFilters.forEach(filter => filter.addEventListener('click', createTag));
-	allFilters.forEach(filter => filter.addEventListener('click', selectedRecipes));
+	allFilters.forEach(filter => filter.addEventListener('click', createTag)); // Create tag
+	allFilters.forEach(filter => filter.addEventListener('click', selectedRecipes)); // Show recipes who match with selected tag
 
 	/* Dropdown open/close */
 
@@ -99,12 +132,10 @@ function init(){
 	function mainSearch(e){
 		let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
 		userSearch = e.currentTarget.value.toUpperCase();
-		selectedRecipes(); // Show selected recipes based on selected tag
-		if(userSearch.length > 2){	
-			searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients); // Show filters who match with user search
-			searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
-			searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
-			for(let i=0; i< allCardsDisplayed.length; i++){
+		selectedRecipes(); // Show selected recipes based on selected tag & show filters based on recipes displayed
+		if(userSearch.length > 2){
+			searchWithFilter(document.querySelectorAll(".dropdown__menu-filter"), allFilters); // Show filters who match with user search
+			for(let i=0; i<allCardsDisplayed.length; i++){
 				if(allCardsDisplayed[i].innerText.toUpperCase().includes(userSearch)){      // The user search match with one displayed card or more ...
 						allCardsDisplayed[i].style.display = "block";            			// ... display cards who match ...
 				} else {
@@ -127,7 +158,7 @@ function init(){
 			} else {                                                        	// No match ...
 					menuElt[i].style.display = "none";                          // ... hide the filter
 			}
-			if(nbResult > 0){                                                           // 1 or more filter match ...
+			if(nbResult > 0 && userSearch.length != 0){                                     // 1 or more filter match ...
 					menuElt[i].parentElement.classList.add('show');                         // ... open the dropdown and show them ...
 					menuElt[i].parentElement.parentElement.classList.add('show-all');
 			} else {                                                                    // No filter match ...  
@@ -136,22 +167,6 @@ function init(){
 			}
 		}
 	}
-
-	document.querySelectorAll(".dropdown__input-title").forEach(element => element.addEventListener('click', (e) => {
-		e.currentTarget.style.display = "none";
-		e.currentTarget.previousElementSibling.focus();
-	}));
-	document.querySelectorAll(".dropdown__input").forEach(element => element.addEventListener('focus', () => {
-			element.nextElementSibling.style.display = "none";
-	}));
-	document.querySelectorAll(".dropdown__input").forEach(element => element.addEventListener('focusout', () => {
-		if(element.value == "" && !element.parentElement.classList.contains("show-all")){
-			element.nextElementSibling.style.display = "block";
-		}
-	}));
-	document.querySelector(".dropdown__input.color1").addEventListener('input', ingredientSearch);
-	document.querySelector(".dropdown__input.color2").addEventListener('input', applianceSearch);
-	document.querySelector(".dropdown__input.color3").addEventListener('input', ustensilSearch);
 
 	function ingredientSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
@@ -170,6 +185,22 @@ function init(){
 		selectedRecipes(); // Show selected recipes based on selected tag
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
 	}
+
+	document.querySelectorAll(".dropdown__input-title").forEach(element => element.addEventListener('click', (e) => {
+		e.currentTarget.style.display = "none";
+		e.currentTarget.previousElementSibling.focus();
+	}));
+	document.querySelectorAll(".dropdown__input").forEach(element => element.addEventListener('focus', () => {
+			element.nextElementSibling.style.display = "none";
+	}));
+	document.querySelectorAll(".dropdown__input").forEach(element => element.addEventListener('focusout', () => {
+		if(element.value == "" && !element.parentElement.classList.contains("show-all")){
+			element.nextElementSibling.style.display = "block";
+		}
+	}));
+	document.querySelector(".dropdown__input.color1").addEventListener('input', ingredientSearch);
+	document.querySelector(".dropdown__input.color2").addEventListener('input', applianceSearch);
+	document.querySelector(".dropdown__input.color3").addEventListener('input', ustensilSearch);
 }
 
 

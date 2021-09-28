@@ -1,3 +1,5 @@
+/* Dropdown open/close */
+
 function filterList(e){
     let dropdownButton = e.currentTarget;
     let dropdown = dropdownButton.parentElement;
@@ -17,22 +19,6 @@ function filterList(e){
         dropdownArrow.classList.add('open');                                // ... the arrow point up ...
         dropdownTitle.style.display = "none";                               // ... remove input title ...
         dropdownInput.classList.add('search-filter');                       // ... show placeholder
-    }
-}
-
-/* Filters */
-
-function createFilter(menuElt, menuStyle, tagStyle, data){ // Create all filters for the dropdowns
-    const p = document.createElement("p");
-    p.classList = menuStyle;
-    const tag = document.createElement("a");
-    tag.classList = tagStyle + " filter";
-
-    for(let i=0; i<data.length; i++){
-        tag.innerHTML = data[i];
-        tag.href = data[i];
-        p.appendChild(tag);
-        menuElt.appendChild(p.cloneNode(true));
     }
 }
 
@@ -101,10 +87,10 @@ function selectedRecipes(){ // Show selected recipes based on selected tag
             }
         }        
     }
-    filtersUpdate();  // Update filters based on recipes displayed
+    updateFilters();  // Update filters based on recipes displayed
 }
 
-function filtersUpdate(){  // Update filters based on recipes displayed
+function updateFilters(){  // Update filters based on recipes displayed
     const allFilters = document.querySelectorAll(".filter");
     let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
     for(let i=0; i<allFilters.length; i++){
@@ -123,31 +109,5 @@ function filtersUpdate(){  // Update filters based on recipes displayed
                 allFilters[i].parentElement.style.display = "none"; // ... hide him
             }
         }
-    }
-}	
-
-/* function multiLineEllipsis(desc){
-    let recipesInstruction = desc.innerText;
-    desc.innerText = "";
-    let counter = 0;
-    while((desc.scrollHeight <= desc.offsetHeight)  && (counter<=recipesInstruction.length)){
-        counter ++;
-        desc.innerText = recipesInstruction.substring(0,  counter) + "...";
-    }
-    if(desc.scrollHeight > desc.offsetHeight){
-        desc.innerText = recipesInstruction.substring(0, counter-1) + "...";
-    }
-} */
-
-function multiLineEllipsis(desc){
-    let recipesInstruction = desc.innerText;
-    desc.innerText = "";
-    let counter = 0;
-    while((desc.scrollHeight <= desc.offsetHeight)  && (counter<=recipesInstruction.length)){
-        counter ++;
-        desc.innerText = recipesInstruction.substring(0,  counter) + "...";
-    }
-    if(desc.scrollHeight > desc.offsetHeight){
-        desc.innerText = recipesInstruction.substring(0, counter-1) + "...";
     }
 }
