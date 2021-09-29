@@ -55,22 +55,11 @@ function init(){
 			recipesResults.appendChild(card.cloneNode(true));
 	}
 
-	document.querySelectorAll(".card__body-description").forEach(function(desc){
-		multiLineEllipsis(desc);
-	});
+	window.setTimeout(cropDescriptions, 100);
 
-	function multiLineEllipsis(desc){
-		let recipesInstruction = desc.innerText;
-		desc.innerText = "";
-		let counter = 0;
-		while((desc.scrollHeight <= desc.offsetHeight)  && (counter<=recipesInstruction.length)){
-			counter ++;
-			desc.innerText = recipesInstruction.substring(0,  counter) + "...";
-		}
-		if(desc.scrollHeight > desc.offsetHeight){
-			desc.innerText = recipesInstruction.substring(0, counter-1) + "...";
-		}
-	}
+
+
+	
 
 	/* Get all filters (ingredients, appliances and ustensils) with the first letter in uppercase and others in lowercase ... */
 
@@ -203,6 +192,31 @@ function init(){
 	document.querySelector(".dropdown__input.color3").addEventListener('input', ustensilSearch);
 }
 
+function cropDescriptions(){
+	document.querySelectorAll(".card__body-description").forEach(function(desc){
+		multiLineEllipsis(desc);
+	});
+}
+
+function multiLineEllipsis(desc){
+	let recipesInstruction = desc.innerText;
+	desc.innerText = "";
+	let counter = 100;
+	while((desc.scrollHeight <= desc.offsetHeight)  && (counter<=recipesInstruction.length)){
+		counter ++;
+		desc.innerText = recipesInstruction.substring(0,  counter) + "...";
+	}
+	if(desc.scrollHeight > desc.offsetHeight){
+		desc.innerText = recipesInstruction.substring(0, counter-1) + "...";
+	}
+}
+
+let resizeTimer = null;
+window.onresize = function()
+{
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(cropDescriptions, 500);
+};
 
 /* document.addEventListener("click", dropdownClickOut);
 

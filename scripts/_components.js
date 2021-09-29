@@ -2,6 +2,10 @@
 
 function filterList(e){
     let dropdownButton = e.currentTarget;
+    switchDropdown(dropdownButton);
+}
+
+function switchDropdown(dropdownButton){
     let dropdown = dropdownButton.parentElement;
     let dropdownArrow = dropdownButton.firstElementChild;
     let dropdownTitle = dropdownButton.previousElementSibling;
