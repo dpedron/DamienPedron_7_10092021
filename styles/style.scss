@@ -130,10 +130,8 @@ h1{
         padding: 0 15px;
         border-radius: 0 5px 5px 0;
         cursor: pointer;
-        .open{
-            transform: rotate(180deg);
-        }
     }
+
     &__menu{
         display: none;
         width: 100%;
@@ -154,17 +152,24 @@ h1{
         }
     }
 }
-.show{
-    display: flex;
-    &-all{
-        width: 667px;
-        z-index: 9999;
+.show-all{
+    width: 667px;
+    z-index: 9999;
+    .show{
+        display: flex;
+    }
+    .search-filter::placeholder{
+        color: rgba(255, 255, 255, 0.5)
+    }
+    .open{
+        transform: rotate(180deg);
     }
 }
 
-.search-filter::placeholder{
-    color: rgba(255, 255, 255, 0.5)
+.hide{
+    display: none;
 }
+
 
 .color1{
     background-color: #3282F7;

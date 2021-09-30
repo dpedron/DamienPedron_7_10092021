@@ -143,10 +143,6 @@ h1 {
   cursor: pointer;
 }
 
-.dropdown__btn .open {
-  transform: rotate(180deg);
-}
-
 .dropdown__menu {
   display: none;
   width: 100%;
@@ -169,17 +165,25 @@ h1 {
   text-decoration: none;
 }
 
-.show {
-  display: flex;
-}
-
 .show-all {
   width: 667px;
   z-index: 9999;
 }
 
-.search-filter::placeholder {
+.show-all .show {
+  display: flex;
+}
+
+.show-all .search-filter::placeholder {
   color: rgba(255, 255, 255, 0.5);
+}
+
+.show-all .open {
+  transform: rotate(180deg);
+}
+
+.hide {
+  display: none;
 }
 
 .color1 {

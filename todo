@@ -1,21 +1,5 @@
-- multiLineEllipsis() temps de chargement + responsiv
-
-- regler pb ouverture dropdown puis recherche dans la barre principale sans fermer
+- multiLineEllipsis() responsiv .....
 
 - click out dropdown
 
 - ameliorer responsiv 
-
-- e.currentTarget.parentElement.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.value = "";
-
-
-			if(nbResult > 0){                                                           // 1 or more filter match ...
-				allFilters[i].parentElement.parentElement.parentElement.classList.add('show-all');                         // ... open the dropdown and show them ...
-				allFilters[i].parentElement.parentElement.classList.add('show');
-			} else {                                                                    // No filter match ...  
-				allFilters[i].parentElement.parentElement.parentElement.classList.remove('show-all');                      // ... close dropdown
-				allFilters[i].parentElement.parentElement.classList.remove('show');
-			}
-
-
-selectedRecipes() and updateFilters() one function ??
