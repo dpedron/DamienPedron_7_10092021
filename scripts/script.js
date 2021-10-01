@@ -1,5 +1,6 @@
 let allSelectedTag = [];
 let allFilters = [];
+let allFullDescriptions = [];
 
 window.onload = function(){
 	init();
@@ -51,7 +52,8 @@ function init(){
 					cardIngredientsList.appendChild(cardIngredients.cloneNode(true))
 			}
 			cardBody.appendChild(cardDescription);
-			cardDescription.innerText = recipes[i].description;    
+			cardDescription.innerText = recipes[i].description;
+			allFullDescriptions.push(cardDescription.innerText);    
 			recipesResults.appendChild(card.cloneNode(true));
 	}
 
@@ -83,7 +85,7 @@ function init(){
 		const p = document.createElement("p");
 		p.classList = menuStyle + " dropdown__menu-filter";
 		const filter = document.createElement("a");
-		filter.classList = filterStyle + " filter";
+		filter.classList = filterStyle + " filter filter-displayed";
 		
 		data.forEach(elt => {
 			filter.innerHTML = elt;
@@ -144,7 +146,7 @@ function init(){
 		for(let i=0; i<data.length; i++){
 			menuElt[i].parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
 			if(userSearch.length > 2){
-				if(menuElt[i].innerText.toUpperCase().includes(userSearch)){    	// Typed characters match with some displayed filter ...
+				if(menuElt[i].innerText.toUpperCase().includes(userSearch) && menuElt[i].firstChild.classList.contains('filter-displayed')){    	// Typed characters match with some displayed filter ...
 					menuElt[i].style.display = "block";                         	// ... display them ...
 					nbResult ++;                                                	// ... increment the number of results
 				} else {                                                        	// No match ...
@@ -152,13 +154,17 @@ function init(){
 				}
 				if(nbResult > 0 && userSearch.length != 0){                                     // 1 or more filter match ...
 						menuElt[i].parentElement.parentElement.classList.add('show-all'); 	// ... open the dropdown and show them ...
+						menuElt[i].parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
 				} else {                                                                     // No filter match ... 
 						menuElt[i].parentElement.parentElement.classList.remove('show-all'); // ... close dropdown
+						menuElt[i].parentElement.previousElementSibling.previousElementSibling.classList.remove('hide');
 				}
 			} else {																		// Less than 3 characterd typed ...     
-				menuElt[i].parentElement.parentElement.classList.remove('show-all');		// ... hide dropdown ... 
-				menuElt[i].style.display = "block";
+				menuElt[i].parentElement.parentElement.classList.remove('show-all');		// ... hide dropdown ...
 				menuElt[i].parentElement.previousElementSibling.previousElementSibling.classList.remove('hide');
+				if(menuElt[i].firstChild.classList.contains('filter-displayed')){					 
+					menuElt[i].style.display = "block";
+				}
 			}	
 		}
 	}
@@ -173,6 +179,7 @@ function init(){
 			if(elt != e.currentTarget){
 				elt.value = "";
 				elt.parentElement.classList.remove('show-all');
+				elt.nextElementSibling.classList.remove('hide');
 			}
 		})
 	}
@@ -182,10 +189,12 @@ function init(){
 		userSearch = e.currentTarget.value.toUpperCase();
 		selectedRecipes(); // Show selected recipes based on selected tag
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
+		e.currentTarget.nextElementSibling.classList.add('hide');
 		document.querySelectorAll(".dropdown__input").forEach(elt => {
 			if(elt != e.currentTarget){
 				elt.value = "";
 				elt.parentElement.classList.remove('show-all');
+				elt.nextElementSibling.classList.remove('hide');
 			}
 		})
 	}
@@ -195,10 +204,12 @@ function init(){
 		userSearch = e.currentTarget.value.toUpperCase();
 		selectedRecipes(); // Show selected recipes based on selected tag
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
+		e.currentTarget.nextElementSibling.classList.add('hide');
 		document.querySelectorAll(".dropdown__input").forEach(elt => {
 			if(elt != e.currentTarget){
 				elt.value = "";
 				elt.parentElement.classList.remove('show-all');
+				elt.nextElementSibling.classList.remove('hide');
 			}
 		})
 	}
@@ -207,7 +218,9 @@ function init(){
 		e.currentTarget.previousElementSibling.focus();
 	}));
 	document.querySelectorAll(".dropdown__input").forEach(element => element.addEventListener('focus', (e) => {
-		e.currentTarget.nextElementSibling.classList.add('hide');
+		if(e.target == element){
+			e.currentTarget.nextElementSibling.classList.add('hide');
+		}
 	}));
 	document.querySelectorAll(".dropdown__input").forEach(element => element.addEventListener('focusout', () => {
 		if(!element.parentElement.classList.contains('show-all')){
@@ -245,28 +258,3 @@ window.onresize = function()
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(cropDescriptions, 500);
 };
-
-document.addEventListener("click", dropdownClickOut);
-
-function dropdownClickOut(e){
-	const dropdowns = document.querySelectorAll(".dropdown");
-	let targetEl = e.target; // clicked element 
-
-	for(let i=0; i<dropdowns.length; i++){
-		
-		if(dropdowns[i].classList.contains("show-all")){
-			do {
-			if(targetEl == dropdowns[i]) {
-				// This is a click inside, does nothing, just return.
-				return;
-			}
-			console.log(targetEl)
-			// Go up the DOM
-			targetEl = targetEl.parentNode;
-			} while (targetEl);
-			// This is a click outside.      
-			dropdowns[i].classList.remove("show-all");
-			dropdowns[i].firstElementChild.nextElementSibling.classList.remove("hide");
-		}
-	}	
-  };

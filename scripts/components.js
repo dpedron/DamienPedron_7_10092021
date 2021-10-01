@@ -39,6 +39,7 @@ function createTag(e){  // Create tag button when the user select a filter
     allSelectedTag = document.querySelectorAll(".btn-filter");
     allSelectedTag.forEach(element => element.addEventListener('click', removeTag));
     e.currentTarget.parentElement.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.value = "";
+    resetInputs();
 }
 
 function removeTag(e){
@@ -54,6 +55,13 @@ function removeTag(e){
     }
     allSelectedTag = document.querySelectorAll(".btn-filter");
     selectedRecipes();    // Show selected recipes based on selected tag
+    resetInputs();
+}
+
+function resetInputs(){
+    document.querySelectorAll(".dropdown").forEach(dropdown => dropdown.classList.remove('show-all'));
+    document.querySelectorAll(".dropdown__input-title").forEach(title => title.classList.remove('hide'));
+    document.querySelector(".search__input").value = "";
 }
 
 /* Show selected recipes */
