@@ -81,10 +81,11 @@ function selectedRecipes(){ // Show selected recipes based on selected tag
                 allCardsDisplayed[i].style.display = "none";             // ... hide other
                 allCardsDisplayed[i].classList.remove("display-recipe");            
             }
-        }        
+        }
     }
     updateFilters();  // Update filters based on recipes displayed
 }
+
 
 function updateFilters(){  // Update filters based on recipes displayed
     const allFilters = document.querySelectorAll(".filter");
@@ -107,3 +108,29 @@ function updateFilters(){  // Update filters based on recipes displayed
         }
     }
 }
+
+function cropDescriptions(){
+	document.querySelectorAll(".card__body-description").forEach(function(desc){          
+		    multiLineEllipsis(desc);    
+	});
+}
+
+function multiLineEllipsis(desc){
+	let recipesInstruction = desc.innerText;
+	desc.innerText = "";
+	let counter = 100;
+	while((desc.scrollHeight <= desc.offsetHeight)  && (counter <= recipesInstruction.length)){
+		counter ++;
+		desc.innerText = recipesInstruction.substring(0,  counter) + "...";
+	}
+	if(desc.scrollHeight > desc.offsetHeight){
+		desc.innerText = recipesInstruction.substring(0, counter-1) + "...";
+	}
+}
+
+let resizeTimer = null;
+window.onresize = function()
+{
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(cropDescriptions, 500);
+};

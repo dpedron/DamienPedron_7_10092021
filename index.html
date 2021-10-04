@@ -13,40 +13,40 @@
 </head>
 <body>
     <header>
-      <img class="logo" src="./images/logo.png" alt="">
+      <img class="logo" src="./images/logo.png">
       <h1>Les petits plats</h1>
     </header>
     <main>
       <div class="search">
         <input class="search__input" type="text" placeholder="Rechercher un ingrédient, appareil, ustensile ou une recette" aria-label="Search">
-        <a href="#" class="search__logo"><i class="fas fa-search"></i></a>                    
+        <i class="fas fa-search search__logo"></i>                   
       </div>      
       <div class="filter-list"></div>
       <div class="dropdowns">
-        <div class="dropdown">
-          <input placeholder="Recherchez un ingrédient" type="text" class="dropdown__input color1 search-filter"></input>
+        <div class="dropdown" title="Liste des ingrédients" role="navigation">
+          <input aria-label="Rechercher" placeholder="Recherchez un ingrédient" type="text" class="dropdown__input color1 search-filter"></input>
           <span class="dropdown__input-title">Ingrédients</span>
-          <button type="button" class="dropdown__btn color1" aria-expanded="false">
+          <button aria-label="déployer la liste" class="dropdown__btn color1" aria-expanded="false">
             <i class="fas fa-chevron-down open"></i>
           </button>
           <div class="dropdown__menu dropdown__menu-ingredients color1 show">
           </div>
         </div>
-        <div class="dropdown">
-          <input placeholder="Recherchez un appareil" type="text" class="dropdown__input color2 search-filter">        
+        <div class="dropdown" title="Liste des appareils" role="navigation">
+          <input aria-label="Rechercher" placeholder="Recherchez un appareil" type="text" class="dropdown__input color2 search-filter">        
           <span class="dropdown__input-title">Appareils</span>
         </input>
-          <button type="button" class="dropdown__btn color2" aria-expanded="false">
+          <button aria-label="déployer la liste" class="dropdown__btn color2" aria-expanded="false">
             <i class="fas fa-chevron-down open"></i>
           </button>
           <div class="dropdown__menu dropdown__menu-appliances color2 show">
           </div>
         </div>
-        <div class="dropdown">
-          <input placeholder="Recherchez un ustensile" type="text" class="dropdown__input color3 search-filter">                
+        <div class="dropdown" title="Liste des ustensiles" role="navigation">
+          <input aria-label="Rechercher" placeholder="Recherchez un ustensile" type="text" class="dropdown__input color3 search-filter">                
           <span class="dropdown__input-title">Ustensiles</span>
         </input>
-          <button type="button" class="dropdown__btn color3" aria-expanded="false">
+          <button aria-label="déployer la liste" class="dropdown__btn color3" aria-expanded="false">
             <i class="fas fa-chevron-down open"></i>
           </button>
           <div class="dropdown__menu dropdown__menu-ustensils color3 show">
@@ -54,6 +54,8 @@
         </div>
       </div>
       <div class="recipes-results">
+        <p class="no-result">Aucune recette ne correspond à votre critère… <br>
+          Vous pouvez chercher par exemple « salade de riz », « brownie », etc.</p>
       </div>
     </main>   
 </body>

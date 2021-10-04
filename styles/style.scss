@@ -8,7 +8,7 @@
 
 body{
     max-width: 1440px;
-    margin: 40px 100px;
+    margin: 40px 0;
 }
 
 header{
@@ -19,6 +19,7 @@ header{
 
 .logo{
     width: 51px;
+    height: 46px;
 }
 
 h1{
@@ -31,8 +32,8 @@ h1{
 .search{
     position: relative;
     display: flex;
-    margin-bottom: 25px;
-    width: 100%;
+    margin: 0 100px 25px 100px;
+    max-width: 1240px;
     &__input{
         background: #E7E7E7;
         height: 69px;
@@ -51,16 +52,15 @@ h1{
         position: absolute;
         top: 17px;
         right: 19px;
-        .fa-search{
-            color: black;
-            font-size: 32px;
-        }
+        color: black;
+        font-size: 32px;
     }
 }
 
 .filter-list{
     display: flex;
     flex-wrap: wrap;
+    margin-left: 100px;
 }
 
 .btn-filter{
@@ -84,6 +84,7 @@ h1{
 }
 .dropdowns{
     display: flex;
+    margin-left: 100px;
 }
 
 .dropdown{
@@ -135,13 +136,13 @@ h1{
     &__menu{
         display: none;
         width: 100%;
-        z-index: 100;
         margin-top: -20px;
         padding: 10px;
         flex-wrap: wrap;
         justify-content: space-between;
         border-radius: 0 0 5px 5px;
         &-ingredient, &-appliance, &-ustensil{
+            z-index: 100;
             width: 31%;
             margin: 0;            
             padding: 5px;
@@ -170,7 +171,6 @@ h1{
     display: none;
 }
 
-
 .color1{
     background-color: #3282F7;
 }
@@ -184,13 +184,20 @@ h1{
 .recipes-results{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 0 -20px;
+    justify-content: space-around;
+    margin: 0 75px;
+    .no-result{
+        display: none;
+        justify-content: center;
+        margin-top: 50px;
+        text-align: center;
+        font-size: 1.4em;
+    }
 }
 
 .card{
     width: 380px;
-    margin: 25px 20px;
+    margin: 25px;
     padding: 0;
     border-radius: 5px;
     background-color: #E7E7E7;
@@ -243,9 +250,10 @@ h1{
     }
 }
 
-@media (max-width: 1420px){
+@media (max-width: 1440px){
     .card{
-        width: 45%;
+        flex-grow: 1;
+        min-width: 35%;
     }
 }
 
@@ -278,7 +286,7 @@ h1{
         margin: 10px;
     }
     .search{
-        margin-bottom: 15px;
+        margin: 0 25px 15px 25px;
         &__input{
             height: 40px;
             font-size: 0.8em;
@@ -290,16 +298,14 @@ h1{
         &__logo{
             top: 12px;
             right: 10px;
-            .fa-search{
-                font-size: 20px;
-            }
+            font-size: 20px;
         }
     }
 
     .dropdowns{
-        margin: 0 -10px;
+        margin: 0 5px 0 15px;
         .dropdown{
-            min-width: 75px;
+            min-width: 40px;
             max-width: 120px;
             height: 45px;
             margin-left: 10px;
@@ -332,5 +338,9 @@ h1{
                 }
             }
         }
+    }
+    
+    .recipes-results{
+        margin: 0;
     }
 }
