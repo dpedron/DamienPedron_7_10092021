@@ -1,13 +1,15 @@
 /* Dropdown open/close */
 
 function filterListBtn(e){
-    if(e.currentTarget.parentElement.classList.contains('show-all')){            // The menu is open...     
+    if(e.currentTarget.parentElement.classList.contains('show-all')){       
         e.currentTarget.parentElement.classList.remove('show-all');
-        e.currentTarget.previousElementSibling.classList.remove('hide');                              // ... tighten the dropdown ...
-    } else {                                              // The menu is close ...
+        if(e.currentTarget.previousElementSibling.previousElementSibling.value == ""){
+            e.currentTarget.previousElementSibling.classList.remove('hide');     
+        }                                   
+    } else {                                              
         e.currentTarget.parentElement.classList.add('show-all');
-        e.currentTarget.previousElementSibling.classList.add('hide');                                  // ... widen the dropdown ...
-    }
+        e.currentTarget.previousElementSibling.classList.add('hide');                                 
+    }    
 }
 
 /* Tag */
@@ -15,10 +17,11 @@ function filterListBtn(e){
 function createTag(e){  // Create tag button when the user select a filter
     e.preventDefault();
     const tagBtn = document.createElement("button");
-    const tagBtnIcon = document.createElement("i");
+    const tagBtnIcon = document.createElement("img");
     const filters = document.querySelector(".filter-list");
     tagBtn.classList = "btn-filter";
-    tagBtnIcon.classList = "far fa-times-circle";
+    tagBtnIcon.src = "../images/cross.svg";
+    tagBtnIcon.classList = "btn-filter__cross"
     if(e.currentTarget.classList.contains("dropdown__menu-ingredient-filter")){    
         tagBtn.classList.add("color1");                                         // Add the ingredient background-color to the tag
     }
@@ -69,6 +72,7 @@ function resetInputs(){
 function selectedRecipes(){ // Show selected recipes based on selected tag
     let allCards = document.querySelectorAll(".card");
     let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
+    document.querySelector('.no-result').style.display = "none";
     for(let i=0; i<allCardsDisplayed.length; i++){        
         if(allSelectedTag.length == 0){                                 // No tag selected ...
             allCards[i].style.display = "block";                        // ... display all cards
@@ -110,9 +114,19 @@ function updateFilters(){  // Update filters based on recipes displayed
 }
 
 function cropDescriptions(){
+    resetDescription();
 	document.querySelectorAll(".card__body-description").forEach(function(desc){          
 		    multiLineEllipsis(desc);    
 	});
+}
+
+function resetDescription(){
+    let allCardsDescription = document.querySelectorAll(".card__body-description");
+    for(i=0; i<allCardsDescription.length; i++){
+        for(j=0; j<allFullDescriptions.length; j++){
+            allCardsDescription[i].innerText = allFullDescriptions[i];
+        }
+    }
 }
 
 function multiLineEllipsis(desc){
@@ -134,3 +148,16 @@ window.onresize = function()
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(cropDescriptions, 500);
 };
+
+function resetDropdown(e){
+    document.querySelector(".search__input").value = ""; // Remove characters of main input when the user search with the dropdown input
+    e.currentTarget.nextElementSibling.classList.add('hide');	// Hide dropdown title 
+    document.querySelectorAll(".dropdown__input").forEach(elt => {
+    if(elt != e.currentTarget){								// Input is not the selected input ...
+        elt.value = "";										// ... empty him ...
+        elt.parentElement.classList.remove('show-all');		// ... hide the dropdown ...
+        elt.nextElementSibling.classList.remove('hide');	// ... show the dropdown title   
+        elt.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.classList.add('hide');
+    }
+})
+}

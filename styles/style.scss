@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700&display=swap');
 
 *{
     font-family: 'Lato', sans-serif;
@@ -18,8 +18,8 @@ header{
 }
 
 .logo{
-    width: 51px;
-    height: 46px;
+    width: 52px;
+    height: 47px;
 }
 
 h1{
@@ -53,7 +53,8 @@ h1{
         top: 17px;
         right: 19px;
         color: black;
-        font-size: 32px;
+        width: 32px;
+        height: 32px;
     }
 }
 
@@ -76,15 +77,16 @@ h1{
     display: flex;
     align-items: center;
     cursor: pointer;
-    .fa-times-circle{
+    &__cross{
         margin-left: 13px;
         align-self: center;
-        font-size: 20px;
+        width: 20px;
+        filter: brightness(0) invert(1);
     }
 }
 .dropdowns{
     display: flex;
-    margin-left: 100px;
+    margin: 0 80px 0 100px;
 }
 
 .dropdown{
@@ -123,14 +125,17 @@ h1{
     &__btn{
         position: absolute;
         height: 100%;
-        font-size: 16px;
         right: -20px;
         top: 0;
         border: none;
-        color: white;
         padding: 0 15px;
         border-radius: 0 5px 5px 0;
         cursor: pointer;
+        &__arrow{
+            filter: brightness(0) invert(1);
+            height: 20px;
+            margin-top: 5px;
+        }
     }
 
     &__menu{
@@ -141,6 +146,11 @@ h1{
         flex-wrap: wrap;
         justify-content: space-between;
         border-radius: 0 0 5px 5px;
+        .no-filter{
+            color: white;
+            margin: 5px 0;            
+            padding: 10px;
+        }
         &-ingredient, &-appliance, &-ustensil{
             z-index: 100;
             width: 31%;
@@ -217,17 +227,26 @@ h1{
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 62px 109px;
         &-title{
+            display: flex;
+            align-items: center;
             grid-area: a;
             font: 1.125em;
             padding: 20px 0;
             max-width: 250px;
         }
         &-time{
+            display: flex;
             grid-area: a;
             font-size: 1.125em;
             font-weight: 700;
             text-align: right;
             padding: 20px 0;
+            justify-content: right;
+            align-items: center;
+            &--logo{
+                width: 20px;
+                margin-right: 7px;
+            }
         }
         &-list-ingredients{
             grid-area: c;
@@ -254,34 +273,35 @@ h1{
     .card{
         flex-grow: 1;
         min-width: 35%;
+        max-width: 45%;
     }
 }
 
-@media (max-width: 960px){
-    body{
-        margin: 50px;
-    }
+@media (max-width: 1024px){
     .card{
-        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
     }
-}
-
-@media (max-width: 768px){
-    body{
-        margin: 20px;
+    .recipes-results{
+        margin: 0 100px;
     }
-    .dropdowns{
-        padding-right: 20px;
-        .dropdown{
-            min-width: 140px;
-            &__menu-ingredient{
-                width: 100%;
+    .dropdown{
+        &__btn{
+            font-size: 15px;
+        }
+        &__menu{
+            font-size: 15px;
+            flex-direction: column;
+            &-ingredient, &-appliance, &-ustensil{
+                width: 100%;      
+                padding: 5px 0;
+                text-align: center;
             }
         }
     }
 }
 
-@media (max-width: 576px){
+@media (max-width: 768px){
     body{
         margin: 10px;
     }
@@ -296,17 +316,30 @@ h1{
             }
         }
         &__logo{
-            top: 12px;
+            top: 5px;
             right: 10px;
-            font-size: 20px;
+            width: 20px;
+        }
+    }
+
+    .filter-list{
+        margin: 0 25px;
+    }
+
+    .btn-filter{
+        margin-right: 10px;
+        padding: 10px 10px;
+        font-size: 0.7em;
+        margin-bottom: 10px;
+        &__cross{
+            width: 15px;
         }
     }
 
     .dropdowns{
-        margin: 0 5px 0 15px;
+        margin: 0 25px 0 15px;
         .dropdown{
             min-width: 40px;
-            max-width: 120px;
             height: 45px;
             margin-left: 10px;
             margin-right: 20px;
@@ -322,25 +355,20 @@ h1{
                 }
             }
             &__btn{
-                font-size: 12px;
                 padding: 0 5px;
-                height: 100%;
+                &__arrow{
+                    width: 12px;
+                }
             }
             &__menu{
                 font-size: 12px;
                 margin-top: -5px;
                 padding: 10px;
-                flex-direction: column;
-                &-ingredient, &-appliance, &-ustensil{
-                    width: 100%;      
-                    padding: 5px 0;
-                    text-align: center;
-                }
             }
         }
     }
     
     .recipes-results{
-        margin: 0;
+        margin: 0 25px;
     }
 }

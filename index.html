@@ -4,57 +4,58 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trouvez très rapidement des recettes pour vos repas">
     <link rel="stylesheet" href="./styles/css/style.css">
-    <script src="https://kit.fontawesome.com/5a1a417096.js" crossorigin="anonymous"></script>
     <title>Les petits plats</title>
-	<script language="javascript" src="./scripts/recipes.js"></script>
-	<script language="javascript" src="./scripts/components.js"></script>
-	<script language="javascript" src="./scripts/script.js"></script>
+    <script src="./scripts/recipes.js"></script>
+    <script src="./scripts/components.js"></script>
+    <script src="./scripts/script.js"></script>
 </head>
 <body>
     <header>
-      <img class="logo" src="./images/logo.png">
+      <img class="logo" src="./images/logo.png" alt="les petits plats">
       <h1>Les petits plats</h1>
     </header>
     <main>
       <div class="search">
         <input class="search__input" type="text" placeholder="Rechercher un ingrédient, appareil, ustensile ou une recette" aria-label="Search">
-        <i class="fas fa-search search__logo"></i>                   
+        <img src="./images/search.svg" alt="search-logo" aria-hidden="true" class="search__logo"></img>                  
       </div>      
       <div class="filter-list"></div>
       <div class="dropdowns">
         <div class="dropdown" title="Liste des ingrédients" role="navigation">
-          <input aria-label="Rechercher" placeholder="Recherchez un ingrédient" type="text" class="dropdown__input color1 search-filter"></input>
+          <input aria-label="Rechercher" placeholder="Recherchez un ingrédient" type="text" class="dropdown__input color1 search-filter">
           <span class="dropdown__input-title">Ingrédients</span>
           <button aria-label="déployer la liste" class="dropdown__btn color1" aria-expanded="false">
-            <i class="fas fa-chevron-down open"></i>
+            <img src="./images/arrow.svg" alt="arrow-logo" aria-hidden="true" class="dropdown__btn__arrow open"></img>  
           </button>
           <div class="dropdown__menu dropdown__menu-ingredients color1 show">
+            <p class="hide no-filter" tabindex="0">Aucune correspondance</p>
           </div>
         </div>
         <div class="dropdown" title="Liste des appareils" role="navigation">
           <input aria-label="Rechercher" placeholder="Recherchez un appareil" type="text" class="dropdown__input color2 search-filter">        
           <span class="dropdown__input-title">Appareils</span>
-        </input>
           <button aria-label="déployer la liste" class="dropdown__btn color2" aria-expanded="false">
-            <i class="fas fa-chevron-down open"></i>
+            <img src="./images/arrow.svg" alt="arrow-logo" aria-hidden="true" class="dropdown__btn__arrow open"></img>
           </button>
           <div class="dropdown__menu dropdown__menu-appliances color2 show">
+            <p class="hide no-filter" tabindex="0">Aucune correspondance</p>
           </div>
         </div>
         <div class="dropdown" title="Liste des ustensiles" role="navigation">
           <input aria-label="Rechercher" placeholder="Recherchez un ustensile" type="text" class="dropdown__input color3 search-filter">                
           <span class="dropdown__input-title">Ustensiles</span>
-        </input>
           <button aria-label="déployer la liste" class="dropdown__btn color3" aria-expanded="false">
-            <i class="fas fa-chevron-down open"></i>
+            <img src="./images/arrow.svg" alt="arrow-logo" aria-hidden="true" class="dropdown__btn__arrow open"></img>
           </button>
           <div class="dropdown__menu dropdown__menu-ustensils color3 show">
+            <p class="hide no-filter" tabindex="0">Aucune correspondance</p>
           </div>
         </div>
       </div>
       <div class="recipes-results">
-        <p class="no-result">Aucune recette ne correspond à votre critère… <br>
+        <p class="no-result" tabindex="0">Aucune recette ne correspond à votre critère… <br>
           Vous pouvez chercher par exemple « salade de riz », « brownie », etc.</p>
       </div>
     </main>   
