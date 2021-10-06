@@ -20,7 +20,7 @@ function createTag(e){  // Create tag button when the user select a filter
     const tagBtnIcon = document.createElement("img");
     const filters = document.querySelector(".filter-list");
     tagBtn.classList = "btn-filter";
-    tagBtnIcon.src = "../images/cross.svg";
+    tagBtnIcon.src = "./images/cross.svg";
     tagBtnIcon.classList = "btn-filter__cross"
     if(e.currentTarget.classList.contains("dropdown__menu-ingredient-filter")){    
         tagBtn.classList.add("color1");                                         // Add the ingredient background-color to the tag
