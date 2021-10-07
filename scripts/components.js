@@ -91,13 +91,35 @@ function selectedRecipes(){ // Show selected recipes based on selected tag
 }
 
 
-function updateFilters(){  // Update filters based on recipes displayed
+/* function updateFilters(){  // Update filters based on recipes displayed
     const allFilters = document.querySelectorAll(".filter");
     let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
     for(let i=0; i<allFilters.length; i++){
         allFilters[i].classList.remove('filter-displayed'); // Hide all filter
         for(let j=0; j<allCardsDisplayed.length; j++){
             if(allCardsDisplayed[j].innerText.toUpperCase().includes(allFilters[i].innerText.toUpperCase()) && !allFilters[i].classList.contains('filter-displayed')){   // Recipes includes filter ...
+                allFilters[i].parentElement.style.display = "block"; // ... display them
+                allFilters[i].classList.add('filter-displayed');
+            } 
+            if(!allCardsDisplayed[j].innerText.toUpperCase().includes(allFilters[i].innerText.toUpperCase()) && !allFilters[i].classList.contains('filter-displayed')){  // Recipes doesn't includes filter ...
+                allFilters[i].parentElement.style.display = "none"; // ... hide them
+            }
+        }
+        for(let j=0; j<allSelectedTag.length; j++){
+            if(allSelectedTag[j].innerText.toUpperCase() == allFilters[i].innerText.toUpperCase()){ // The filter is selected ...
+                allFilters[i].parentElement.style.display = "none"; // ... hide him
+            }
+        }
+    }
+} */
+
+function updateFilters(){  // Update filters based on recipes displayed
+    const allFilters = document.querySelectorAll(".filter");
+    let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
+    for(let i=0; i<allFilters.length; i++){
+        allFilters[i].classList.remove('filter-displayed'); // Hide all filter 
+        for(let j=0; j<allCardsDisplayed.length; j++){
+            if(allCardsDisplayed[j].innerText.toUpperCase().includes(allFilters[i].innerText.toUpperCase())){   // Recipes includes filter ...
                 allFilters[i].parentElement.style.display = "block"; // ... display them
                 allFilters[i].classList.add('filter-displayed');
             } 

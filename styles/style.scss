@@ -365,6 +365,13 @@ h1{
                 font-size: 12px;
                 margin-top: -5px;
                 padding: 10px;
+                .no-filter{
+                    text-align: center;
+                    font-size: 10px;
+                    font-weight: 700;
+                    margin: 0;            
+                    padding: 0;
+                }
             }
         }
     }

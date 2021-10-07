@@ -391,6 +391,13 @@ h1 {
     margin-top: -5px;
     padding: 10px;
   }
+  .dropdowns .dropdown__menu .no-filter {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+  }
   .recipes-results {
     margin: 0 25px;
   }

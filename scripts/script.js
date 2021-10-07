@@ -33,6 +33,7 @@ function init(){
 	let allUstensils = [];
 
 	for(let i=0; i<recipes.length; i++){
+			card.id = "recipe-" + recipes[i].id;
 			card.innerHTML = "";
 			card.tabIndex = "0";
 			card.appendChild(cardImg);
@@ -126,7 +127,7 @@ function init(){
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients); // Show ingredients who match with user search
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances); // Show appliances who match with user search
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils); // Show ustensils who match with user search		
-		for(let i=0; i<allCardsDisplayed.length; i++){
+		/* for(let i=0; i<allCardsDisplayed.length; i++){
 			if(userSearch.length > 2){
 				if(allCardsDisplayed[i].innerText.toUpperCase().includes(userSearch)){      // The user search match with one displayed card or more ...
 						allCardsDisplayed[i].style.display = "block";            			// ... display cards who match ...
@@ -135,7 +136,22 @@ function init(){
 						allCardsDisplayed[i].style.display = "none";             			// ... hide others
 						nbResult --;  
 				}
-		}
+		} */
+
+		for(let i=0; i<recipes.length; i++){
+			let ingredients = [];
+			if(userSearch.length > 2){
+				for(let j=0; j<recipes[i].ingredients.length; j++){
+					ingredients.push(recipes[i].ingredients[j].ingredient.toUpperCase());
+				}
+				if(recipes[i].name.toUpperCase().includes(userSearch) || recipes[i].description.toUpperCase().includes(userSearch) || recipes[i].appliance.toUpperCase().includes(userSearch) || ingredients.join().includes(userSearch) || recipes[i].ustensils.join().toUpperCase().includes(userSearch)){      // The user search match with one displayed card or more ...
+						document.getElementById("recipe-" + recipes[i].id).style.display = "block";            			// ... display cards who match ...
+						nbResult ++;
+				} else {
+					document.getElementById("recipe-" + recipes[i].id).style.display = "none";             			// ... hide others
+						nbResult --;  
+				}
+			}
 			if(nbResult == 0){	// No recipe match ...
 				document.querySelector(".no-result").style.display = "block";	// ... show message "no result" to user
 			}  else {	// At least 1 recipe match ...
@@ -194,6 +210,7 @@ function init(){
 	function ustensilSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
 		selectedRecipes();
+		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
 		resetDropdown(e);
 	}
 
