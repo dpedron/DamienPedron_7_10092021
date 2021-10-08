@@ -106,7 +106,7 @@ function init(){
 
 	const allFilters = document.querySelectorAll(".filter");
 	allFilters.forEach(filter => filter.addEventListener('click', createTag)); // Create tag
-	allFilters.forEach(filter => filter.addEventListener('click', selectedRecipes)); // Show recipes who match with selected tag
+	allFilters.forEach(filter => filter.addEventListener('click', recipesByTags)); // Show recipes who match with selected tag
 
 	/* Dropdown open/close */
 
@@ -123,7 +123,7 @@ function init(){
 			elt.value = "";
 		});
 		userSearch = e.currentTarget.value.toUpperCase();
-		selectedRecipes(); // Show selected recipes based on selected tag & show filters based on recipes displayed
+		recipesByTags(); // Show selected recipes based on selected tag & show filters based on recipes displayed
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients); // Show ingredients who match with user search
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances); // Show appliances who match with user search
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils); // Show ustensils who match with user search		
@@ -195,21 +195,21 @@ function init(){
 
 	function ingredientSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
-		selectedRecipes(); // Show selected recipes based on selected tag
+		recipesByTags(); // Show selected recipes based on selected tag
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);	
 		resetDropdown(e);
 	}
 
 	function applianceSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
-		selectedRecipes();
+		recipesByTags();
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
 		resetDropdown(e);
 	}
 
 	function ustensilSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
-		selectedRecipes();
+		recipesByTags();
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
 		resetDropdown(e);
 	}

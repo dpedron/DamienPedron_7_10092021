@@ -57,7 +57,7 @@ function removeTag(e){
         }
     }
     allSelectedTag = document.querySelectorAll(".btn-filter");
-    selectedRecipes();    // Show selected recipes based on selected tag
+    recipesByTags();    // Show selected recipes based on selected tag
     resetInputs();
 }
 
@@ -69,7 +69,7 @@ function resetInputs(){
 
 /* Show selected recipes */
 
-function selectedRecipes(){ // Show selected recipes based on selected tag
+/* function recipesByTags(){ // Show selected recipes based on selected tag
     let allCards = document.querySelectorAll(".card");
     let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
     document.querySelector('.no-result').style.display = "none";
@@ -86,6 +86,31 @@ function selectedRecipes(){ // Show selected recipes based on selected tag
                 allCardsDisplayed[i].classList.remove("display-recipe");            
             }
         }
+    }
+    updateFilters();  // Update filters based on recipes displayed
+} */
+
+
+function recipesByTags(){ // Show selected recipes based on selected tag
+    let allCards = document.querySelectorAll(".card");
+    let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
+    document.querySelector('.no-result').style.display = "none";
+    for(let i=0; i<allCardsDisplayed.length; i++){        
+        if(allSelectedTag.length == 0){                                 // No tag selected ...
+            allCards[i].style.display = "block";                        // ... display all cards
+            allCards[i].classList.add("display-recipe");
+        }
+        for(let j=0; j<recipes.length; j++){
+			let ingredients = [];
+            recipes[j].ingredients.forEach(ing => ingredients.push(ing.ingredient.toUpperCase()))
+            for(let k=0; k<allSelectedTag.length; k++){
+                if(recipes[j].appliance.toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase()) || ingredients.join().includes(allSelectedTag[k].innerText.toUpperCase()) || recipes[j].ustensils.join().toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase())){      // The user search match with one displayed card or more ...
+                    document.getElementById("recipe-" + recipes[j].id).style.display = "block";            			// ... display cards who match ...
+                } else {
+                    document.getElementById("recipe-" + recipes[j].id).style.display = "none";             			// ... hide others
+                }
+            }
+        }       
     }
     updateFilters();  // Update filters based on recipes displayed
 }
@@ -116,23 +141,32 @@ function selectedRecipes(){ // Show selected recipes based on selected tag
 function updateFilters(){  // Update filters based on recipes displayed
     const allFilters = document.querySelectorAll(".filter");
     let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
-    for(let i=0; i<allFilters.length; i++){
-        allFilters[i].classList.remove('filter-displayed'); // Hide all filter 
-        for(let j=0; j<allCardsDisplayed.length; j++){
-            if(allCardsDisplayed[j].innerText.toUpperCase().includes(allFilters[i].innerText.toUpperCase())){   // Recipes includes filter ...
-                allFilters[i].parentElement.style.display = "block"; // ... display them
-                allFilters[i].classList.add('filter-displayed');
-            } 
-            if(!allCardsDisplayed[j].innerText.toUpperCase().includes(allFilters[i].innerText.toUpperCase()) && !allFilters[i].classList.contains('filter-displayed')){  // Recipes doesn't includes filter ...
-                allFilters[i].parentElement.style.display = "none"; // ... hide them
+    let displayedRecipesID = [];
+    let displayedFilters = [];
+    allCardsDisplayed.forEach(card => displayedRecipesID.push(card.id.substring(7))); // Get all the id of displayed recipes
+    displayedRecipesID.forEach(id => {  // Get all filters based on displayed recipes
+        displayedFilters.push(recipes[id-1].appliance.toUpperCase(), recipes[id-1].ustensils.join().toUpperCase());
+        recipes[id-1].ingredients.forEach(ing => displayedFilters.push(ing.ingredient.toUpperCase()))
+    }); 
+    allFilters.forEach(filter => filter.classList.remove('filter-displayed'));
+    for(i=0; i<displayedFilters.length; i++){
+        for(j=0; j<allFilters.length; j++){
+            if(displayedFilters[i].includes(allFilters[j].innerText.toUpperCase())){
+                allFilters[j].parentElement.style.display = "block"; // ... display them
+                allFilters[j].classList.add('filter-displayed');
             }
-        }
-        for(let j=0; j<allSelectedTag.length; j++){
-            if(allSelectedTag[j].innerText.toUpperCase() == allFilters[i].innerText.toUpperCase()){ // The filter is selected ...
-                allFilters[i].parentElement.style.display = "none"; // ... hide him
+            if(!displayedFilters[i].includes(allFilters[j].innerText.toUpperCase()) && !allFilters[j].classList.contains('filter-displayed')){  // Recipes doesn't includes filter ...
+                allFilters[j].parentElement.style.display = "none"; // ... hide them
+            }
+            for(let k=0; k<allSelectedTag.length; k++){
+                if(allSelectedTag[k].innerText.toUpperCase() == allFilters[j].innerText.toUpperCase()){ // The filter is selected ...
+                    allFilters[j].parentElement.style.display = "none"; // ... hide him
+                }
             }
         }
     }
+        
+    
 }
 
 function cropDescriptions(){
