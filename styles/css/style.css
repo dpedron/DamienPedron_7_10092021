@@ -389,7 +389,7 @@ h1 {
   .dropdowns .dropdown__menu {
     font-size: 12px;
     margin-top: -5px;
-    padding: 0 10px;
+    padding: 0 10px 10px 10px;
   }
   .dropdowns .dropdown__menu .no-filter {
     text-align: center;

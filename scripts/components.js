@@ -96,7 +96,7 @@ function recipesByTags(){ // Show selected recipes based on selected tag
         }
         for(let j=0; j<recipes.length; j++){
 			let ingredients = [];
-            recipes[j].ingredients.forEach(ing => ingredients.push(ing.ingredient.toUpperCase()))
+            recipes[j].ingredients.forEach(ing => ingredients.push(ing.ingredient.toUpperCase()));
             for(let k=0; k<allSelectedTag.length; k++){
                 if(recipes[j].appliance.toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase()) || ingredients.join().includes(allSelectedTag[k].innerText.toUpperCase()) || recipes[j].ustensils.join().toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase())){      // The user search match with one displayed card or more ...
                     if(document.getElementById("recipe-" + recipes[j].id).classList.contains("display-recipe")){

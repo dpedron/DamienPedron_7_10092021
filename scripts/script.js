@@ -124,9 +124,9 @@ function init(){
 		});
 		userSearch = e.currentTarget.value.toUpperCase();
 		recipesByTags(); // Show selected recipes based on selected tag & show filters based on recipes displayed
-		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients); // Show ingredients who match with user search
-		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances); // Show appliances who match with user search
-		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils); // Show ustensils who match with user search		
+		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient")); // Show ingredients who match with user search
+		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance")); // Show appliances who match with user search
+		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil")); // Show ustensils who match with user search		
 		
 		// ANCIENNE VERSION AVEC LE INNERTEXT :
 
@@ -181,9 +181,38 @@ function init(){
 
 	/* Search with filter */
 
-	function searchWithFilter(menuElt, data){
+	function searchWithFilter(menuElt){
+
+		/* menuElt.forEach(elt => {
+			elt.parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
+			elt.parentElement.firstElementChild.classList.add('hide');
+			if(userSearch.length > 2){
+				if(elt.innerText.toUpperCase().includes(userSearch) && elt.firstChild.classList.contains('filter-displayed') && !elt.firstChild.classList.contains('tag-selected')){
+					elt.style.display = "block";
+				} else {
+					elt.style.display = "none";
+				}				
+				if(menuElt.length > 0 && userSearch.length != 0){                                     // 1 or more filter match ...
+					elt.parentElement.parentElement.classList.add('show-all'); 	// ... open the dropdown and show them ...
+					elt.parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
+					elt.parentElement.firstElementChild.classList.add('hide');
+				} else {                                                                     // No filter match ... 
+					elt.parentElement.parentElement.classList.remove('show-all'); // ... close dropdown
+					elt.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... hide dropdown title
+					elt.parentElement.firstElementChild.classList.remove('hide');
+				}
+			} else {																		// Less than 3 characterd typed ...     
+				elt.parentElement.parentElement.classList.remove('show-all');		// ... hide dropdown ...
+				elt.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... show dropdown title
+				if(elt.firstChild.classList.contains('filter-displayed')){					 
+					elt.style.display = "block";
+				}
+			}
+		}) */
+
+
 		let nbFilter = 0;                                                   	// Number of filter found by search
-		for(let i=0; i<data.length; i++){
+		for(let i=0; i<menuElt.length; i++){
 			menuElt[i].parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
 			menuElt[i].parentElement.firstElementChild.classList.add('hide');
 			if(userSearch.length > 2){
@@ -215,21 +244,21 @@ function init(){
 	function ingredientSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
 		recipesByTags(); // Show selected recipes based on selected tag
-		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients);	
+		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"));	
 		resetDropdown(e);
 	}
 
 	function applianceSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
 		recipesByTags();
-		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances);
+		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"));
 		resetDropdown(e);
 	}
 
 	function ustensilSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
 		recipesByTags();
-		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils);
+		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"));
 		resetDropdown(e);
 	}
 
