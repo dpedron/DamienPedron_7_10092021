@@ -127,6 +127,9 @@ function init(){
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"), allUniqueIngredients); // Show ingredients who match with user search
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"), allUniqueAppliances); // Show appliances who match with user search
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"), allUniqueUstensils); // Show ustensils who match with user search		
+		
+		// ANCIENNE VERSION AVEC LE INNERTEXT :
+
 		/* for(let i=0; i<allCardsDisplayed.length; i++){
 			if(userSearch.length > 2){
 				if(allCardsDisplayed[i].innerText.toUpperCase().includes(userSearch)){      // The user search match with one displayed card or more ...
@@ -138,7 +141,9 @@ function init(){
 				}
 		} */
 
-		for(let i=0; i<recipes.length; i++){
+		// SOLUTION QUI FONCTIONNE (version non optimisée):
+
+		/* for(let i=0; i<recipes.length; i++){
 			let ingredients = [];
 			if(userSearch.length > 2){
 				for(let j=0; j<recipes[i].ingredients.length; j++){
@@ -157,6 +162,20 @@ function init(){
 			}  else {	// At least 1 recipe match ...
 				document.querySelector(".no-result").style.display = "none";	// ... hide message "no result"
 			}
+		} */
+
+
+		// VERSION OPTIMISEE
+		
+		if(userSearch.length > 2){
+			let filters = recipes.filter(recipe => recipe.name.toUpperCase().includes(userSearch) || recipe.description.toUpperCase().includes(userSearch) || recipe.ingredients.forEach(ing => ing.ingredient.toUpperCase().includes(userSearch)) || recipe.ustensils.forEach(ust => ust.toUpperCase().includes(userSearch)));
+			document.querySelectorAll(".card").forEach(card => card.style.display = "none");
+			filters.forEach(filter => document.getElementById("recipe-" + filter.id).style.display = "block");
+			if(filters.length == 0){
+				document.querySelector(".no-result").style.display = "block";
+			} else {
+				document.querySelector(".no-result").style.display = "none";
+			}			
 		}
 	}
 

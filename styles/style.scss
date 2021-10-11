@@ -364,7 +364,7 @@ h1{
             &__menu{
                 font-size: 12px;
                 margin-top: -5px;
-                padding: 10px;
+                padding: 0 10px;
                 .no-filter{
                     text-align: center;
                     font-size: 10px;
@@ -376,6 +376,10 @@ h1{
         }
     }
     
+    .show-all{
+        width: 100%;
+    }
+
     .recipes-results{
         margin: 0 25px;
     }

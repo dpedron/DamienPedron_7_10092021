@@ -9,7 +9,7 @@ function filterListBtn(e){
     } else {                                              
         e.currentTarget.parentElement.classList.add('show-all');
         e.currentTarget.previousElementSibling.classList.add('hide');                                 
-    }    
+    }
 }
 
 /* Tag */
@@ -61,12 +61,6 @@ function removeTag(e){
     resetInputs();
 }
 
-function resetInputs(){
-    document.querySelectorAll(".dropdown").forEach(dropdown => dropdown.classList.remove('show-all'));
-    document.querySelectorAll(".dropdown__input-title").forEach(title => title.classList.remove('hide'));
-    document.querySelector(".search__input").value = "";
-}
-
 /* Show selected recipes */
 
 /* function recipesByTags(){ // Show selected recipes based on selected tag
@@ -105,14 +99,18 @@ function recipesByTags(){ // Show selected recipes based on selected tag
             recipes[j].ingredients.forEach(ing => ingredients.push(ing.ingredient.toUpperCase()))
             for(let k=0; k<allSelectedTag.length; k++){
                 if(recipes[j].appliance.toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase()) || ingredients.join().includes(allSelectedTag[k].innerText.toUpperCase()) || recipes[j].ustensils.join().toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase())){      // The user search match with one displayed card or more ...
-                    document.getElementById("recipe-" + recipes[j].id).style.display = "block";            			// ... display cards who match ...
+                    if(document.getElementById("recipe-" + recipes[j].id).classList.contains("display-recipe")){
+                        document.getElementById("recipe-" + recipes[j].id).style.display = "block";            			// ... display cards who match ...
+                    }
                 } else {
                     document.getElementById("recipe-" + recipes[j].id).style.display = "none";             			// ... hide others
+                    document.getElementById("recipe-" + recipes[j].id).classList.remove("display-recipe");
                 }
             }
         }       
     }
     updateFilters();  // Update filters based on recipes displayed
+    setTimeout(cropDescriptions, 100);
 }
 
 
@@ -143,8 +141,12 @@ function updateFilters(){  // Update filters based on recipes displayed
     let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
     let displayedRecipesID = [];
     let displayedFilters = [];
-    allCardsDisplayed.forEach(card => displayedRecipesID.push(card.id.substring(7))); // Get all the id of displayed recipes
-    displayedRecipesID.forEach(id => {  // Get all filters based on displayed recipes
+    allCardsDisplayed.forEach(card => {
+        if(card.style.display == "block"){
+            displayedRecipesID.push(card.id.substring(7)); // Get all the id of displayed recipes
+        }
+    });
+    displayedRecipesID.forEach(id => {  // Get all filters based on displayed recipes        
         displayedFilters.push(recipes[id-1].appliance.toUpperCase(), recipes[id-1].ustensils.join().toUpperCase());
         recipes[id-1].ingredients.forEach(ing => displayedFilters.push(ing.ingredient.toUpperCase()))
     }); 
@@ -165,15 +167,6 @@ function updateFilters(){  // Update filters based on recipes displayed
             }
         }
     }
-        
-    
-}
-
-function cropDescriptions(){
-    resetDescription();
-	document.querySelectorAll(".card__body-description").forEach(function(desc){          
-		    multiLineEllipsis(desc);    
-	});
 }
 
 function resetDescription(){
@@ -183,6 +176,13 @@ function resetDescription(){
             allCardsDescription[i].innerText = allFullDescriptions[i];
         }
     }
+}
+
+function cropDescriptions(){
+    resetDescription();
+	document.querySelectorAll(".card__body-description").forEach(function(desc){          
+		    multiLineEllipsis(desc);    
+	});
 }
 
 function multiLineEllipsis(desc){
@@ -204,6 +204,13 @@ window.onresize = function()
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(cropDescriptions, 500);
 };
+
+function resetInputs(){
+    document.querySelectorAll(".dropdown").forEach(dropdown => dropdown.classList.remove('show-all'));
+    document.querySelectorAll(".dropdown__input").forEach(input => input.value = "");
+    document.querySelectorAll(".dropdown__input-title").forEach(title => title.classList.remove('hide'));
+    document.querySelector(".search__input").value = "";
+}
 
 function resetDropdown(e){
     document.querySelector(".search__input").value = ""; // Remove characters of main input when the user search with the dropdown input
