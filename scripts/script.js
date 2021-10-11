@@ -32,49 +32,49 @@ function init(){
 	let allAppliances = [];
 	let allUstensils = [];
 
-	for(let i=0; i<recipes.length; i++){
-			card.id = "recipe-" + recipes[i].id;
+	recipes.forEach(recipe => {
+			card.id = "recipe-" + recipe.id;
 			card.innerHTML = "";
 			card.tabIndex = "0";
 			card.appendChild(cardImg);
 			card.appendChild(cardBody);
 			cardBody.appendChild(cardTitle);
-			cardTitle.innerText = recipes[i].name;
+			cardTitle.innerText = recipe.name;
 			cardBody.appendChild(cardTime);
-			cardTime.innerHTML = "<img src='./images/clock.svg' alt='time-logo' aria-hidden='true' class='card__body-time--logo'></img>" + recipes[i].time + " min";
+			cardTime.innerHTML = "<img src='./images/clock.svg' alt='time-logo' aria-hidden='true' class='card__body-time--logo'></img>" + recipe.time + " min";
 			cardBody.appendChild(cardIngredientsList);
 			cardIngredientsList.innerHTML = "";
-			for(let j=0; j<recipes[i].ingredients.length; j++){
-					if(recipes[i].ingredients[j].quantity == null && recipes[i].ingredients[j].unit == null){
-							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + recipes[i].ingredients[j].ingredient;
-					} else if (recipes[i].ingredients[j].unit == null){
-							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + recipes[i].ingredients[j].ingredient + ":</span>" + " " + recipes[i].ingredients[j].quantity;
+			recipe.ingredients.forEach(ing =>{
+					if(ing.quantity == null && ing.unit == null){
+							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + ing.ingredient;
+					} else if (ing.unit == null){
+							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + ing.ingredient + ":</span>" + " " + ing.quantity;
 					} else {                
-							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + recipes[i].ingredients[j].ingredient + ":</span>" + " " + recipes[i].ingredients[j].quantity + " " + recipes[i].ingredients[j].unit;
+							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + ing.ingredient + ":</span>" + " " + ing.quantity + " " + ing.unit;
 					}
 					cardIngredientsList.appendChild(cardIngredients.cloneNode(true))
-			}
+			})
 			cardBody.appendChild(cardDescription);
-			cardDescription.innerText = recipes[i].description;
+			cardDescription.innerText = recipe.description;
 			allFullDescriptions.push(cardDescription.innerText);    
 			recipesResults.appendChild(card.cloneNode(true));
-	}
+	})
 
 	window.setTimeout(cropDescriptions, 100);
 
 	/* Get all filters (ingredients, appliances and ustensils) with the first letter in uppercase and others in lowercase ... */
 
-	for(let i=0; i<recipes.length; i++){
-		allAppliances.push(recipes[i].appliance[0].toUpperCase() + recipes[i].appliance.slice(1));  // Appliances 
-		for(let j=0; j<recipes[i].ingredients.length; j++){                                         // Ingredients
-				allIngredients.push(recipes[i].ingredients[j].ingredient[0].toUpperCase() +  
-				recipes[i].ingredients[j].ingredient.slice(1));
-		}
-		for(let j=0; j<recipes[i].ustensils.length; j++){                                           // Ustensils
-				allUstensils.push(recipes[i].ustensils[j][0].toUpperCase() +  
-				recipes[i].ustensils[j].slice(1));
-		}
-	}
+	recipes.forEach(recipe => {
+		allAppliances.push(recipe.appliance[0].toUpperCase() + recipe.appliance.slice(1));  // Appliances 
+		recipe.ingredients.forEach(ing => {                                         // Ingredients
+				allIngredients.push(ing.ingredient[0].toUpperCase() +  
+				ing.ingredient.slice(1));
+		});
+		recipe.ustensils.forEach(ust => {                                           // Ustensils
+				allUstensils.push(ust[0].toUpperCase() +  
+				ust.slice(1));
+		});
+	});
 
 	/* ... sort them by alphabetical order */
 
@@ -126,20 +126,7 @@ function init(){
 		recipesByTags(); // Show selected recipes based on selected tag & show filters based on recipes displayed
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient")); // Show ingredients who match with user search
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance")); // Show appliances who match with user search
-		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil")); // Show ustensils who match with user search		
-		
-		// ANCIENNE VERSION AVEC LE INNERTEXT :
-
-		/* for(let i=0; i<allCardsDisplayed.length; i++){
-			if(userSearch.length > 2){
-				if(allCardsDisplayed[i].innerText.toUpperCase().includes(userSearch)){      // The user search match with one displayed card or more ...
-						allCardsDisplayed[i].style.display = "block";            			// ... display cards who match ...
-						nbResult ++;
-				} else {
-						allCardsDisplayed[i].style.display = "none";             			// ... hide others
-						nbResult --;  
-				}
-		} */
+		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil")); // Show ustensils who match with user search
 
 		// SOLUTION QUI FONCTIONNE (version non optimisée):
 
@@ -182,35 +169,6 @@ function init(){
 	/* Search with filter */
 
 	function searchWithFilter(menuElt){
-
-		/* menuElt.forEach(elt => {
-			elt.parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
-			elt.parentElement.firstElementChild.classList.add('hide');
-			if(userSearch.length > 2){
-				if(elt.innerText.toUpperCase().includes(userSearch) && elt.firstChild.classList.contains('filter-displayed') && !elt.firstChild.classList.contains('tag-selected')){
-					elt.style.display = "block";
-				} else {
-					elt.style.display = "none";
-				}				
-				if(menuElt.length > 0 && userSearch.length != 0){                                     // 1 or more filter match ...
-					elt.parentElement.parentElement.classList.add('show-all'); 	// ... open the dropdown and show them ...
-					elt.parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
-					elt.parentElement.firstElementChild.classList.add('hide');
-				} else {                                                                     // No filter match ... 
-					elt.parentElement.parentElement.classList.remove('show-all'); // ... close dropdown
-					elt.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... hide dropdown title
-					elt.parentElement.firstElementChild.classList.remove('hide');
-				}
-			} else {																		// Less than 3 characterd typed ...     
-				elt.parentElement.parentElement.classList.remove('show-all');		// ... hide dropdown ...
-				elt.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... show dropdown title
-				if(elt.firstChild.classList.contains('filter-displayed')){					 
-					elt.style.display = "block";
-				}
-			}
-		}) */
-
-
 		let nbFilter = 0;                                                   	// Number of filter found by search
 		for(let i=0; i<menuElt.length; i++){
 			menuElt[i].parentElement.previousElementSibling.previousElementSibling.classList.add('hide');

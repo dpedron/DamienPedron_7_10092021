@@ -61,30 +61,6 @@ function removeTag(e){
     resetInputs();
 }
 
-/* Show selected recipes */
-
-/* function recipesByTags(){ // Show selected recipes based on selected tag
-    let allCards = document.querySelectorAll(".card");
-    let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
-    document.querySelector('.no-result').style.display = "none";
-    for(let i=0; i<allCardsDisplayed.length; i++){        
-        if(allSelectedTag.length == 0){                                 // No tag selected ...
-            allCards[i].style.display = "block";                        // ... display all cards
-            allCards[i].classList.add("display-recipe");
-        }
-        for(let j=0; j<allSelectedTag.length; j++){
-            if(allCardsDisplayed[i].innerText.toUpperCase().includes(allSelectedTag[j].innerText.toUpperCase())){      // The selected tag match with one displayed card or more ...
-                allCardsDisplayed[i].style.display = "block";            // ... display cards who match ...
-            } else {
-                allCardsDisplayed[i].style.display = "none";             // ... hide other
-                allCardsDisplayed[i].classList.remove("display-recipe");            
-            }
-        }
-    }
-    updateFilters();  // Update filters based on recipes displayed
-} */
-
-
 function recipesByTags(){ // Show selected recipes based on selected tag
     let allCards = document.querySelectorAll(".card");
     let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
@@ -112,29 +88,6 @@ function recipesByTags(){ // Show selected recipes based on selected tag
     updateFilters();  // Update filters based on recipes displayed
     setTimeout(cropDescriptions, 100);
 }
-
-
-/* function updateFilters(){  // Update filters based on recipes displayed
-    const allFilters = document.querySelectorAll(".filter");
-    let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
-    for(let i=0; i<allFilters.length; i++){
-        allFilters[i].classList.remove('filter-displayed'); // Hide all filter
-        for(let j=0; j<allCardsDisplayed.length; j++){
-            if(allCardsDisplayed[j].innerText.toUpperCase().includes(allFilters[i].innerText.toUpperCase()) && !allFilters[i].classList.contains('filter-displayed')){   // Recipes includes filter ...
-                allFilters[i].parentElement.style.display = "block"; // ... display them
-                allFilters[i].classList.add('filter-displayed');
-            } 
-            if(!allCardsDisplayed[j].innerText.toUpperCase().includes(allFilters[i].innerText.toUpperCase()) && !allFilters[i].classList.contains('filter-displayed')){  // Recipes doesn't includes filter ...
-                allFilters[i].parentElement.style.display = "none"; // ... hide them
-            }
-        }
-        for(let j=0; j<allSelectedTag.length; j++){
-            if(allSelectedTag[j].innerText.toUpperCase() == allFilters[i].innerText.toUpperCase()){ // The filter is selected ...
-                allFilters[i].parentElement.style.display = "none"; // ... hide him
-            }
-        }
-    }
-} */
 
 function updateFilters(){  // Update filters based on recipes displayed
     const allFilters = document.querySelectorAll(".filter");
