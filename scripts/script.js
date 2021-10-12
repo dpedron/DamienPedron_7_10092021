@@ -49,8 +49,18 @@ function init(){
 							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + ing.ingredient;
 					} else if (ing.unit == null){
 							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + ing.ingredient + ":</span>" + " " + ing.quantity;
-					} else {                
+					} else {
+						if(ing.unit === "grammes"){
+							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + ing.ingredient + ":</span>" + " " + ing.quantity + " g";
+						} else if (ing.unit === "cuillères à soupe"){
+							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + ing.ingredient + ":</span>" + " " + ing.quantity + " c. à s.";
+						} else if (ing.unit === "cuillères à café"){							
+							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + ing.ingredient + ":</span>" + " " + ing.quantity + " c. à c.";
+						} else {							
 							cardIngredients.innerHTML = "<span class='card__body-ingredients--bold'>" + ing.ingredient + ":</span>" + " " + ing.quantity + " " + ing.unit;
+						}
+						               
+							
 					}
 					cardIngredientsList.appendChild(cardIngredients.cloneNode(true))
 			})

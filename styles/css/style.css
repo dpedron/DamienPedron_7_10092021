@@ -13,11 +13,6 @@ header {
   align-items: center;
 }
 
-.logo {
-  width: 52px;
-  height: 47px;
-}
-
 h1 {
   color: #D04F4F;
   font-size: 2.25em;
@@ -29,17 +24,15 @@ h1 {
   position: relative;
   display: flex;
   margin: 0 100px 25px 100px;
-  max-width: 1240px;
 }
 
 .search__input {
   background: #E7E7E7;
-  height: 69px;
+  width: 100%;
   font-size: 1.125em;
-  padding-left: 20px;
+  padding: 23px 0 23px 20px;
   border: 1px solid #ced4da;
   border-radius: 5px;
-  width: 100%;
 }
 
 .search__input:focus {
@@ -50,11 +43,9 @@ h1 {
 
 .search__logo {
   position: absolute;
-  top: 17px;
+  top: 18px;
   right: 19px;
   color: black;
-  width: 32px;
-  height: 32px;
 }
 
 .filter-list {
@@ -64,12 +55,11 @@ h1 {
 }
 
 .btn-filter {
-  margin-right: 20px;
+  margin: 0 20px 15px 0;
   padding: 10px 20px;
   font-size: 0.875em;
   font-weight: 700;
   background-color: #3282F7;
-  margin-bottom: 15px;
   border: none;
   border-radius: 5px;
   color: white;
@@ -81,8 +71,6 @@ h1 {
 .btn-filter__cross {
   margin-left: 13px;
   align-self: center;
-  width: 20px;
-  height: 20px;
   filter: brightness(0) invert(1);
 }
 
@@ -143,8 +131,6 @@ h1 {
 
 .dropdown__btn__arrow {
   filter: brightness(0) invert(1);
-  height: 20px;
-  width: 20px;
   margin-top: 5px;
 }
 
@@ -165,14 +151,14 @@ h1 {
   padding: 5px;
 }
 
-.dropdown__menu-ingredient, .dropdown__menu-appliance, .dropdown__menu-ustensil {
+.dropdown__menu-filter {
   z-index: 999;
   width: 31%;
   margin: 0;
   padding: 5px;
 }
 
-.dropdown__menu-ingredient-filter, .dropdown__menu-appliance-filter, .dropdown__menu-ustensil-filter {
+.filter {
   color: white;
   text-decoration: none;
 }
@@ -226,8 +212,9 @@ h1 {
 }
 
 .card {
-  width: 380px;
-  margin: 25px;
+  flex-grow: 1;
+  max-width: 29.5%;
+  margin: 25px 10px;
   padding: 0;
   border-radius: 5px;
   background-color: #E7E7E7;
@@ -246,7 +233,7 @@ h1 {
   display: grid;
   grid-template-areas: "a a" "c d";
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 62px 109px;
+  grid-template-rows: 52px 119px;
 }
 
 .card__body-title {
@@ -255,7 +242,7 @@ h1 {
   align-items: center;
   grid-area: a;
   font-size: 1.125em;
-  padding: 20px 0;
+  margin-right: 100px;
   max-width: 250px;
   line-height: 15px;
 }
@@ -266,14 +253,11 @@ h1 {
   font-size: 1.125em;
   font-weight: 700;
   text-align: right;
-  padding: 20px 0;
   justify-content: right;
   align-items: center;
 }
 
 .card__body-time--logo {
-  height: 20px;
-  width: 20px;
   margin-right: 7px;
 }
 
@@ -301,8 +285,6 @@ h1 {
 
 @media (max-width: 1440px) {
   .card {
-    flex-grow: 1;
-    min-width: 35%;
     max-width: 45%;
   }
 }
@@ -310,7 +292,6 @@ h1 {
 @media (max-width: 1024px) {
   .card {
     max-width: 100%;
-    min-width: 100%;
   }
   .recipes-results {
     margin: 0 100px;
@@ -322,7 +303,7 @@ h1 {
     font-size: 15px;
     flex-direction: column;
   }
-  .dropdown__menu-ingredient, .dropdown__menu-appliance, .dropdown__menu-ustensil {
+  .dropdown__menu-filter {
     width: 100%;
     padding: 5px 0;
     text-align: center;
@@ -408,10 +389,11 @@ h1 {
     margin: 0 10px;
   }
   .card__body {
-    line-height: 10px;
+    line-height: 12px;
   }
   .card__body-title {
-    font-size: 0.8em;
+    font-size: 0.9em;
+    font-weight: 700;
     margin-right: 100px;
   }
   .card__body-time {
@@ -422,10 +404,10 @@ h1 {
     width: 20px;
   }
   .card__body-ingredients {
-    font-size: 0.6em;
+    font-size: 0.75em;
   }
   .card__body-description {
-    font-size: 0.6em;
+    font-size: 0.75em;
   }
 }
 /*# sourceMappingURL=style.css.map */
