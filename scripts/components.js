@@ -59,31 +59,27 @@ function removeTag(e){
     allSelectedTag = document.querySelectorAll(".btn-filter");
     recipesByTags();    // Show selected recipes based on selected tag
     resetInputs();
+    document.querySelector(".no-result").style.display = "none";
 }
 
 function recipesByTags(){ // Show selected recipes based on selected tag
-    let allCards = document.querySelectorAll(".card");
-    let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
-    document.querySelector('.no-result').style.display = "none";
-    for(let i=0; i<allCardsDisplayed.length; i++){        
-        if(allSelectedTag.length == 0){                                 // No tag selected ...
-            allCards[i].style.display = "block";                        // ... display all cards
-            allCards[i].classList.add("display-recipe");
-        }
-        for(let j=0; j<recipes.length; j++){
-			let ingredients = [];
-            recipes[j].ingredients.forEach(ing => ingredients.push(ing.ingredient.toUpperCase()));
-            for(let k=0; k<allSelectedTag.length; k++){
-                if(recipes[j].appliance.toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase()) || ingredients.join().includes(allSelectedTag[k].innerText.toUpperCase()) || recipes[j].ustensils.join().toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase())){      // The user search match with one displayed card or more ...
-                    if(document.getElementById("recipe-" + recipes[j].id).classList.contains("display-recipe")){
-                        document.getElementById("recipe-" + recipes[j].id).style.display = "block";            			// ... display cards who match ...
-                    }
-                } else {
-                    document.getElementById("recipe-" + recipes[j].id).style.display = "none";             			// ... hide others
-                    document.getElementById("recipe-" + recipes[j].id).classList.remove("display-recipe");
+    for (const recipe of recipes) {
+        let ingredients = [];
+        recipe.ingredients.forEach(ing => ingredients.push(ing.ingredient.toUpperCase()));
+        for(let k=0; k<allSelectedTag.length; k++){
+            if(recipe.appliance.toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase()) || ingredients.join().includes(allSelectedTag[k].innerText.toUpperCase()) || recipe.ustensils.join().toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase())){      // The user search match with one displayed card or more ...
+                if(document.getElementById("recipe-" + recipe.id).classList.contains("display-recipe")){
+                    document.getElementById("recipe-" + recipe.id).style.display = "block";            			// ... display cards who match ...
                 }
+            } else {
+                document.getElementById("recipe-" + recipe.id).style.display = "none";             			// ... hide others
+                document.getElementById("recipe-" + recipe.id).classList.remove("display-recipe");
             }
-        }       
+        }
+        if(allSelectedTag.length == 0){                                 // No tag selected ...
+            document.querySelectorAll(".card").forEach(card => card.style.display = "block");                        // ... display all cards
+            document.querySelectorAll(".card").forEach(card => card.classList.add("display-recipe"));
+        }
     }
     updateFilters();  // Update filters based on recipes displayed
     setTimeout(cropDescriptions, 100);

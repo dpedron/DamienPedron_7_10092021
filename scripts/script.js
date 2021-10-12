@@ -123,7 +123,6 @@ function init(){
 			elt.value = "";
 		});
 		userSearch = e.currentTarget.value.toUpperCase();
-		recipesByTags(); // Show selected recipes based on selected tag & show filters based on recipes displayed
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient")); // Show ingredients who match with user search
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance")); // Show appliances who match with user search
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil")); // Show ustensils who match with user search
@@ -137,8 +136,10 @@ function init(){
 					ingredients.push(recipes[i].ingredients[j].ingredient.toUpperCase());
 				}
 				if(recipes[i].name.toUpperCase().includes(userSearch) || recipes[i].description.toUpperCase().includes(userSearch) || recipes[i].appliance.toUpperCase().includes(userSearch) || ingredients.join().includes(userSearch) || recipes[i].ustensils.join().toUpperCase().includes(userSearch)){      // The user search match with one displayed card or more ...
+					if(document.getElementById("recipe-" + recipes[i].id).classList.contains('display-recipe')){
 						document.getElementById("recipe-" + recipes[i].id).style.display = "block";            			// ... display cards who match ...
 						nbResult ++;
+					}
 				} else {
 					document.getElementById("recipe-" + recipes[i].id).style.display = "none";             			// ... hide others
 						nbResult --;  
@@ -154,68 +155,77 @@ function init(){
 
 		// VERSION OPTIMISEE
 		
+		
+		let filteredCards = recipes.filter(recipe => recipe.name.toUpperCase().includes(userSearch) || recipe.description.toUpperCase().includes(userSearch) || recipe.ingredients.some(ing => ing.ingredient.toUpperCase().includes(userSearch)) || recipe.ustensils.forEach(ust => ust.toUpperCase().includes(userSearch)));
 		if(userSearch.length > 2){
-			let filters = recipes.filter(recipe => recipe.name.toUpperCase().includes(userSearch) || recipe.description.toUpperCase().includes(userSearch) || recipe.ingredients.forEach(ing => ing.ingredient.toUpperCase().includes(userSearch)) || recipe.ustensils.forEach(ust => ust.toUpperCase().includes(userSearch)));
 			document.querySelectorAll(".card").forEach(card => card.style.display = "none");
-			filters.forEach(filter => document.getElementById("recipe-" + filter.id).style.display = "block");
-			if(filters.length == 0){
-				document.querySelector(".no-result").style.display = "block";
-			} else {
-				document.querySelector(".no-result").style.display = "none";
-			}			
+			filteredCards.forEach(card =>{
+				if(document.getElementById("recipe-" + card.id).classList.contains('display-recipe')){
+					document.getElementById("recipe-" + card.id).style.display = "block";
+				}
+			});
+		} else {
+			recipesByTags(); // Show selected recipes based on selected tag & show filters based on recipes displayed
 		}
+		let displayedCards = [];
+		document.querySelectorAll(".card").forEach(card => {
+			if(card.style.display == "block"){
+				displayedCards.push(card)
+			}
+		})
+		document.querySelector(".no-result").style.display = displayedCards.length == 0? "block":"none";
 	}
 
 	/* Search with filter */
 
-	function searchWithFilter(menuElt){
-		let nbFilter = 0;                                                   	// Number of filter found by search
-		for(let i=0; i<menuElt.length; i++){
-			menuElt[i].parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
-			menuElt[i].parentElement.firstElementChild.classList.add('hide');
+	function searchWithFilter(menuElt){                                                	// Number of filter found by search
+		let activeFilters = [];
+		menuElt.forEach(elt => {
+			elt.parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
+			if(elt.innerText.toUpperCase().includes(userSearch) && elt.firstChild.classList.contains('filter-displayed') && !elt.firstChild.classList.contains('tag-selected')){    	// Typed characters match with some displayed filter ...
+				elt.style.display = "block";                         	// ... display them ...
+				activeFilters.push(elt);
+			} else {                                                        	// No match ...
+				elt.style.display = "none";                          // ... hide the filter
+			}
+			if(activeFilters.length == 0){
+				elt.parentElement.firstElementChild.classList.remove('hide');
+			} else {
+				elt.parentElement.firstElementChild.classList.add('hide');
+			}	
 			if(userSearch.length > 2){
-				if(menuElt[i].innerText.toUpperCase().includes(userSearch) && menuElt[i].firstChild.classList.contains('filter-displayed') && !menuElt[i].firstChild.classList.contains('tag-selected')){    	// Typed characters match with some displayed filter ...
-					menuElt[i].style.display = "block";                         	// ... display them ...
-					nbFilter ++;                                                	// ... increment the number of filter
-				} else {                                                        	// No match ...
-					menuElt[i].style.display = "none";                          // ... hide the filter
-				}
-				if(nbFilter > 0 && userSearch.length != 0){                                     // 1 or more filter match ...
-						menuElt[i].parentElement.parentElement.classList.add('show-all'); 	// ... open the dropdown and show them ...
-						menuElt[i].parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
-						menuElt[i].parentElement.firstElementChild.classList.add('hide');
+				if(activeFilters.length > 0){                                 // 1 or more filter match ...
+						elt.parentElement.parentElement.classList.add('show-all'); 	// ... open the dropdown and show them ...
+						elt.parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
 				} else {                                                                     // No filter match ... 
-						menuElt[i].parentElement.parentElement.classList.remove('show-all'); // ... close dropdown
-						menuElt[i].parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... hide dropdown title
-						menuElt[i].parentElement.firstElementChild.classList.remove('hide');
+						elt.parentElement.parentElement.classList.remove('show-all'); // ... close dropdown
+						elt.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... hide dropdown title
 				}
 			} else {																		// Less than 3 characterd typed ...     
-				menuElt[i].parentElement.parentElement.classList.remove('show-all');		// ... hide dropdown ...
-				menuElt[i].parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... show dropdown title
-				if(menuElt[i].firstChild.classList.contains('filter-displayed')){					 
-					menuElt[i].style.display = "block";
+				elt.parentElement.parentElement.classList.remove('show-all');		// ... hide dropdown ...
+				elt.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... show dropdown title
+				if(elt.firstChild.classList.contains('filter-displayed')){					 
+					elt.style.display = "block";
 				}
-			}	
-		}
+			}
+		});
 	}
+
 
 	function ingredientSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
-		recipesByTags(); // Show selected recipes based on selected tag
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"));	
 		resetDropdown(e);
 	}
 
 	function applianceSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
-		recipesByTags();
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"));
 		resetDropdown(e);
 	}
 
 	function ustensilSearch(e){
 		userSearch = e.currentTarget.value.toUpperCase();
-		recipesByTags();
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"));
 		resetDropdown(e);
 	}
