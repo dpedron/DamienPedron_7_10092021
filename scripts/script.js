@@ -86,7 +86,7 @@ function init(){
 			recipesResults.appendChild(card.cloneNode(true));
 	})
 
-	/* window.setTimeout(cropDescriptions, 100); */
+	window.setTimeout(cropDescriptions, 100);
 
 	/* Get all filters (ingredients, appliances and ustensils) with the first letter in uppercase and others in lowercase ... */
 
@@ -136,13 +136,26 @@ function init(){
 
 	/* Dropdown open/close */
 
-	document.querySelectorAll('.dropdown__btn').forEach(btn => btn.addEventListener('click', filterListBtn));	
-
+	document.querySelectorAll('.dropdown__btn').forEach(btn => btn.addEventListener('click', filterListBtn));
+	
 	/* Main search */
+
+	/* Préparer les recipes pour filtrage rapide */
+
+	recipes.forEach(recipe => {
+		recipe.search = recipe.name.toUpperCase() + " " + recipe.description.toUpperCase() + " " + 
+			recipe.appliance.toUpperCase() + " " + [...recipe.ingredients.map(ingredient => {return ingredient.ingredient.toUpperCase()})].join() +
+			" " + recipe.ustensils.join().toUpperCase();/* 
+		recipe.nameSearch = recipe.name.toUpperCase() + " " + recipe.description.toUpperCase();
+		recipe.appliance = recipe.appliance.toUpperCase();
+		recipe.ingredientsSearch = [...recipe.ingredients.map(ingredient => {return ingredient.ingredient.toUpperCase()})].join();
+		recipe.ustensilsSearch = recipe.ustensils.join().toUpperCase(); */
+	})
 
 	document.querySelector(".search__input").addEventListener('input', mainSearch);
 
-	function mainSearch(e){            
+	function mainSearch(e){   
+		/* let t1 = new Date();  */ 
 		document.querySelectorAll(".dropdown__input").forEach(elt => { // Remove characters of dropdowns input when the user search with the main input
 			elt.value = "";
 		});
@@ -176,7 +189,7 @@ function init(){
 		// VERSION OPTIMISEE
 		
 		
-		let filteredCards = recipes.filter(recipe => recipe.name.toUpperCase().includes(userSearch) || recipe.appliance.toUpperCase().includes(userSearch) || recipe.description.toUpperCase().includes(userSearch) || recipe.ingredients.some(ing => ing.ingredient.toUpperCase().includes(userSearch)) || recipe.ustensils.forEach(ust => ust.toUpperCase().includes(userSearch)));
+		let filteredCards = recipes.filter(recipe => recipe.search.includes(userSearch));
 		if(userSearch.length > 2){
 			document.querySelectorAll(".card").forEach(card => card.style.display = "none");
 			filteredCards.forEach(card =>{
@@ -195,6 +208,8 @@ function init(){
 			}
 		})
 		document.querySelector(".no-result").style.display = displayedCards.length == 0? "block":"none";
+		/* let t2 = new Date();
+		console.log(t2 - t1); */
 	}
 
 	/* Search with filter */

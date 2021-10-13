@@ -119,7 +119,7 @@ function updateFilters(){  // Update filters based on recipes displayed
     }
 }
 
-/* function resetDescription(){
+function resetDescription(){
     let allCardsDescription = document.querySelectorAll(".card__body-description");
     for(i=0; i<allCardsDescription.length; i++){
         for(j=0; j<allFullDescriptions.length; j++){
@@ -127,14 +127,12 @@ function updateFilters(){  // Update filters based on recipes displayed
         }
     }
 }
-
 function cropDescriptions(){
     resetDescription();
 	document.querySelectorAll(".card__body-description").forEach(function(desc){          
 		    multiLineEllipsis(desc);    
 	});
 }
-
 function multiLineEllipsis(desc){
 	let recipesInstruction = desc.innerText;
 	desc.innerText = "";
@@ -147,13 +145,12 @@ function multiLineEllipsis(desc){
 		desc.innerText = recipesInstruction.substring(0, counter-1) + "...";
 	}
 }
-
 let resizeTimer = null;
 window.onresize = function()
 {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(cropDescriptions, 500);
-}; */
+};
 
 function resetInputs(){
     document.querySelectorAll(".dropdown").forEach(dropdown => dropdown.classList.remove('show-all'));
