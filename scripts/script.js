@@ -8,6 +8,22 @@ window.onload = function(){
 };
 
 function init(){
+	
+	/* 	let recipesData = [];
+	function getRecipesData() {
+		recipes.forEach(recipe => {
+			recipesData.push({
+				"id": recipe.id,
+				"name": recipe.name.toUpperCase(),
+				"description": recipe.description.toUpperCase(),
+				"appliance": recipe.appliance.toUpperCase(),
+				"ingredients": [...recipe.ingredients.map(ingredient => {return ingredient.ingredient.toUpperCase()})].join(),
+				"ustensils": recipe.ustensils.join().toUpperCase(),
+			})
+		})
+	 }
+
+	 getRecipesData(); */
 
 	/* Recipes cards DOM */
 
@@ -70,7 +86,7 @@ function init(){
 			recipesResults.appendChild(card.cloneNode(true));
 	})
 
-	window.setTimeout(cropDescriptions, 100);
+	/* window.setTimeout(cropDescriptions, 100); */
 
 	/* Get all filters (ingredients, appliances and ustensils) with the first letter in uppercase and others in lowercase ... */
 
@@ -126,9 +142,7 @@ function init(){
 
 	document.querySelector(".search__input").addEventListener('input', mainSearch);
 
-	function mainSearch(e){
-		let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");
-		let nbResult = allCardsDisplayed.length;                                                   	// Number of filter found by search
+	function mainSearch(e){            
 		document.querySelectorAll(".dropdown__input").forEach(elt => { // Remove characters of dropdowns input when the user search with the main input
 			elt.value = "";
 		});
@@ -139,34 +153,30 @@ function init(){
 
 		// SOLUTION QUI FONCTIONNE (version non optimisée):
 
-		/* for(let i=0; i<recipes.length; i++){
-			let ingredients = [];
-			if(userSearch.length > 2){
+		
+		/* if(userSearch.length > 2){
+			for(let i=0; i<recipes.length; i++){
+				let ingredients = [];
 				for(let j=0; j<recipes[i].ingredients.length; j++){
 					ingredients.push(recipes[i].ingredients[j].ingredient.toUpperCase());
 				}
 				if(recipes[i].name.toUpperCase().includes(userSearch) || recipes[i].description.toUpperCase().includes(userSearch) || recipes[i].appliance.toUpperCase().includes(userSearch) || ingredients.join().includes(userSearch) || recipes[i].ustensils.join().toUpperCase().includes(userSearch)){      // The user search match with one displayed card or more ...
 					if(document.getElementById("recipe-" + recipes[i].id).classList.contains('display-recipe')){
 						document.getElementById("recipe-" + recipes[i].id).style.display = "block";            			// ... display cards who match ...
-						nbResult ++;
 					}
 				} else {
-					document.getElementById("recipe-" + recipes[i].id).style.display = "none";             			// ... hide others
-						nbResult --;  
+					document.getElementById("recipe-" + recipes[i].id).style.display = "none";             			// ... hide others 
 				}
-			}
-			if(nbResult == 0){	// No recipe match ...
-				document.querySelector(".no-result").style.display = "block";	// ... show message "no result" to user
-			}  else {	// At least 1 recipe match ...
-				document.querySelector(".no-result").style.display = "none";	// ... hide message "no result"
-			}
+			} 
+		} else {
+			recipesByTags(); // Show selected recipes based on selected tag & show filters based on recipes displayed
 		} */
 
 
 		// VERSION OPTIMISEE
 		
 		
-		let filteredCards = recipes.filter(recipe => recipe.name.toUpperCase().includes(userSearch) || recipe.description.toUpperCase().includes(userSearch) || recipe.ingredients.some(ing => ing.ingredient.toUpperCase().includes(userSearch)) || recipe.ustensils.forEach(ust => ust.toUpperCase().includes(userSearch)));
+		let filteredCards = recipes.filter(recipe => recipe.name.toUpperCase().includes(userSearch) || recipe.appliance.toUpperCase().includes(userSearch) || recipe.description.toUpperCase().includes(userSearch) || recipe.ingredients.some(ing => ing.ingredient.toUpperCase().includes(userSearch)) || recipe.ustensils.forEach(ust => ust.toUpperCase().includes(userSearch)));
 		if(userSearch.length > 2){
 			document.querySelectorAll(".card").forEach(card => card.style.display = "none");
 			filteredCards.forEach(card =>{
@@ -177,10 +187,11 @@ function init(){
 		} else {
 			recipesByTags(); // Show selected recipes based on selected tag & show filters based on recipes displayed
 		}
+
 		let displayedCards = [];
 		document.querySelectorAll(".card").forEach(card => {
 			if(card.style.display == "block"){
-				displayedCards.push(card)
+				displayedCards.push(card);
 			}
 		})
 		document.querySelector(".no-result").style.display = displayedCards.length == 0? "block":"none";

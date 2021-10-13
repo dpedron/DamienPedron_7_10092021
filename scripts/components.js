@@ -59,6 +59,7 @@ function removeTag(e){
     allSelectedTag = document.querySelectorAll(".btn-filter");
     recipesByTags();
     resetInputs();
+    setTimeout(cropDescriptions, 100);
 }
 
 /* Show selected recipes based on selected tag */
@@ -83,7 +84,6 @@ function recipesByTags(){
         }
     }
     updateFilters();  // Update filters based on recipes displayed
-    setTimeout(cropDescriptions, 100);
 }
 
 function updateFilters(){  // Update filters based on recipes displayed
@@ -119,7 +119,7 @@ function updateFilters(){  // Update filters based on recipes displayed
     }
 }
 
-function resetDescription(){
+/* function resetDescription(){
     let allCardsDescription = document.querySelectorAll(".card__body-description");
     for(i=0; i<allCardsDescription.length; i++){
         for(j=0; j<allFullDescriptions.length; j++){
@@ -153,7 +153,7 @@ window.onresize = function()
 {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(cropDescriptions, 500);
-};
+}; */
 
 function resetInputs(){
     document.querySelectorAll(".dropdown").forEach(dropdown => dropdown.classList.remove('show-all'));

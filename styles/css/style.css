@@ -291,6 +291,7 @@ h1 {
 
 @media (max-width: 1024px) {
   .card {
+    margin: 25px 0;
     max-width: 100%;
   }
   .recipes-results {
