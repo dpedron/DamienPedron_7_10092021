@@ -8,22 +8,6 @@ window.onload = function(){
 };
 
 function init(){
-	
-	/* 	let recipesData = [];
-	function getRecipesData() {
-		recipes.forEach(recipe => {
-			recipesData.push({
-				"id": recipe.id,
-				"name": recipe.name.toUpperCase(),
-				"description": recipe.description.toUpperCase(),
-				"appliance": recipe.appliance.toUpperCase(),
-				"ingredients": [...recipe.ingredients.map(ingredient => {return ingredient.ingredient.toUpperCase()})].join(),
-				"ustensils": recipe.ustensils.join().toUpperCase(),
-			})
-		})
-	 }
-
-	 getRecipesData(); */
 
 	/* Recipes cards DOM */
 
@@ -92,11 +76,11 @@ function init(){
 
 	recipes.forEach(recipe => {
 		allAppliances.push(recipe.appliance[0].toUpperCase() + recipe.appliance.slice(1));  // Appliances 
-		recipe.ingredients.forEach(ing => {                                         // Ingredients
+		recipe.ingredients.forEach(ing => { // Ingredients
 				allIngredients.push(ing.ingredient[0].toUpperCase() +  
 				ing.ingredient.slice(1));
 		});
-		recipe.ustensils.forEach(ust => {                                           // Ustensils
+		recipe.ustensils.forEach(ust => { // Ustensils
 				allUstensils.push(ust[0].toUpperCase() +  
 				ust.slice(1));
 		});
@@ -140,22 +124,17 @@ function init(){
 	
 	/* Main search */
 
-	/* Préparer les recipes pour filtrage rapide */
+	/* Pretreatment of recipes data, get all necessary informations to compare the user search with recipes */
 
 	recipes.forEach(recipe => {
 		recipe.search = recipe.name.toUpperCase() + " " + recipe.description.toUpperCase() + " " + 
 			recipe.appliance.toUpperCase() + " " + [...recipe.ingredients.map(ingredient => {return ingredient.ingredient.toUpperCase()})].join() +
-			" " + recipe.ustensils.join().toUpperCase();/* 
-		recipe.nameSearch = recipe.name.toUpperCase() + " " + recipe.description.toUpperCase();
-		recipe.appliance = recipe.appliance.toUpperCase();
-		recipe.ingredientsSearch = [...recipe.ingredients.map(ingredient => {return ingredient.ingredient.toUpperCase()})].join();
-		recipe.ustensilsSearch = recipe.ustensils.join().toUpperCase(); */
+			" " + recipe.ustensils.join().toUpperCase();
 	})
 
 	document.querySelector(".search__input").addEventListener('input', mainSearch);
 
-	function mainSearch(e){   
-		/* let t1 = new Date();  */ 
+	function mainSearch(e){
 		document.querySelectorAll(".dropdown__input").forEach(elt => { // Remove characters of dropdowns input when the user search with the main input
 			elt.value = "";
 		});
@@ -189,12 +168,12 @@ function init(){
 		// VERSION OPTIMISEE
 		
 		
-		let filteredCards = recipes.filter(recipe => recipe.search.includes(userSearch));
+		let filteredRecipes = recipes.filter(recipe => recipe.search.includes(userSearch));
 		if(userSearch.length > 2){
 			document.querySelectorAll(".card").forEach(card => card.style.display = "none");
-			filteredCards.forEach(card =>{
-				if(document.getElementById("recipe-" + card.id).classList.contains('display-recipe')){
-					document.getElementById("recipe-" + card.id).style.display = "block";
+			filteredRecipes.forEach(recipe =>{
+				if(document.getElementById("recipe-" + recipe.id).classList.contains('display-recipe')){
+					document.getElementById("recipe-" + recipe.id).style.display = "block";
 				}
 			});
 		} else {
@@ -208,78 +187,77 @@ function init(){
 			}
 		})
 		document.querySelector(".no-result").style.display = displayedCards.length == 0? "block":"none";
-		/* let t2 = new Date();
-		console.log(t2 - t1); */
 	}
 
 	/* Search with filter */
 
-	function searchWithFilter(menuElt){                                                	// Number of filter found by search
+	function searchWithFilter(menuFilters){
 		let activeFilters = [];
-		menuElt.forEach(elt => {
-			elt.parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
-			if(elt.innerText.toUpperCase().includes(userSearch) && elt.firstChild.classList.contains('filter-displayed') && !elt.firstChild.classList.contains('tag-selected')){    	// Typed characters match with some displayed filter ...
-				elt.style.display = "block";                         	// ... display them ...
-				activeFilters.push(elt);
-			} else {                                                        	// No match ...
-				elt.style.display = "none";                          // ... hide the filter
+		menuFilters.forEach(filter => {
+			filter.parentElement.previousElementSibling.previousElementSibling.classList.add('hide'); // Remove dropdown title
+			if(filter.innerText.toUpperCase().includes(userSearch) && filter.firstChild.classList.contains('filter-displayed') && !filter.firstChild.classList.contains('tag-selected')){ // Typed characters match with some displayed filter ...
+				filter.style.display = "block"; // ... display them ...
+				activeFilters.push(filter);
+			} else { // No correspondence ...
+				filter.style.display = "none"; // ... hide the filter
 			}
-			if(activeFilters.length == 0){
-				elt.parentElement.firstElementChild.classList.remove('hide');
+			if(activeFilters.length == 0){ // No filter in the list ...
+				filter.parentElement.firstElementChild.classList.remove('hide'); // ... show "no filter"
 			} else {
-				elt.parentElement.firstElementChild.classList.add('hide');
+				filter.parentElement.firstElementChild.classList.add('hide'); // Some filter, remove "no filter"
 			}	
-			if(userSearch.length > 2){
-				if(activeFilters.length > 0){                                 // 1 or more filter match ...
-						elt.parentElement.parentElement.classList.add('show-all'); 	// ... open the dropdown and show them ...
-						elt.parentElement.previousElementSibling.previousElementSibling.classList.add('hide');
-				} else {                                                                     // No filter match ... 
-						elt.parentElement.parentElement.classList.remove('show-all'); // ... close dropdown
-						elt.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... hide dropdown title
+			if(userSearch.length > 2){ // 3 characters or more typed by the user
+				if(activeFilters.length > 0){ // 1 or more filter match ...
+						filter.parentElement.parentElement.classList.add('show-all'); 	// ... open the dropdown and show them ...
+						filter.parentElement.previousElementSibling.previousElementSibling.classList.add('hide'); // ... remove dropdown title
+				} else { // No filter match ... 
+						filter.parentElement.parentElement.classList.remove('show-all'); // ... close dropdown
+						filter.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... show dropdown title
 				}
-			} else {																		// Less than 3 characterd typed ...     
-				elt.parentElement.parentElement.classList.remove('show-all');		// ... hide dropdown ...
-				elt.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... show dropdown title
-				if(elt.firstChild.classList.contains('filter-displayed')){					 
-					elt.style.display = "block";
+			} else { // Less than 3 characters typed ...     
+				filter.parentElement.parentElement.classList.remove('show-all');		// ... hide dropdown ...
+				filter.parentElement.previousElementSibling.previousElementSibling.classList.remove('hide'); // ... show dropdown title
+				if(filter.firstChild.classList.contains('filter-displayed')){ // ... filter display base on recipes display			 
+					filter.style.display = "block";
 				}
 			}
 		});
 	}
 
-
-	function ingredientSearch(e){
-		userSearch = e.currentTarget.value.toUpperCase();
-		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient"));	
-		resetDropdown(e);
+	function ingredientSearch(e){ // Search in ingredients dropdown input
+		userSearch = e.currentTarget.value.toUpperCase(); // Characters typed by the user, in uppercase
+		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient")); // Search
+		resetDropdown(e); // Reset the inputs (main and dropdown) other than current
 	}
+	document.querySelector(".dropdown__input.color1").addEventListener('input', ingredientSearch);
 
 	function applianceSearch(e){
-		userSearch = e.currentTarget.value.toUpperCase();
+		userSearch = e.currentTarget.value.toUpperCase(); 
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"));
 		resetDropdown(e);
 	}
+	document.querySelector(".dropdown__input.color2").addEventListener('input', applianceSearch);
 
-	function ustensilSearch(e){
+	function ustensilSearch(e){ 
 		userSearch = e.currentTarget.value.toUpperCase();
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"));
 		resetDropdown(e);
 	}
+	document.querySelector(".dropdown__input.color3").addEventListener('input', ustensilSearch);
 
-	document.querySelectorAll(".dropdown__input-title").forEach(element => element.addEventListener('click', (e) => {
+	/* Dropdown input text focus management */
+
+	document.querySelectorAll(".dropdown__input-title").forEach(element => element.addEventListener('click', (e) => { // Click on dropdown title, dropdown input get the focus
 		e.currentTarget.previousElementSibling.focus();
 	}));
-	document.querySelectorAll(".dropdown__input").forEach(element => element.addEventListener('focus', (e) => {
+	document.querySelectorAll(".dropdown__input").forEach(element => element.addEventListener('focus', (e) => { // When the input get the focus, remove the dropdown title
 		if(e.target == element){
 			e.currentTarget.nextElementSibling.classList.add('hide');
 		}
 	}));
 	document.querySelectorAll(".dropdown__input").forEach(element => element.addEventListener('focusout', () => {
-		if(!element.parentElement.classList.contains('show-all') && element.value == ""){
+		if(!element.parentElement.classList.contains('show-all') && element.value == ""){ // When the input lost focus, the dropdown is not open and the input value is "", show dropdown title
 			element.nextElementSibling.classList.remove('hide');
 		}
 	}));
-	document.querySelector(".dropdown__input.color1").addEventListener('input', ingredientSearch);
-	document.querySelector(".dropdown__input.color2").addEventListener('input', applianceSearch);
-	document.querySelector(".dropdown__input.color3").addEventListener('input', ustensilSearch);
 }

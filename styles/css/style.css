@@ -280,7 +280,7 @@ h1 {
   font-size: 0.75em;
   font-weight: 400;
   font-family: 'Roboto', sans-serif;
-  height: 106px;
+  height: 109px;
 }
 
 @media (max-width: 1440px) {
@@ -327,7 +327,7 @@ h1 {
     text-overflow: ellipsis;
   }
   .search__logo {
-    top: 5px;
+    top: 10px;
     right: 10px;
     width: 20px;
   }
