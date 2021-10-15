@@ -224,6 +224,7 @@ function init(){
 		});
 	}
 
+
 	function ingredientSearch(e){ // Search in ingredients dropdown input
 		userSearch = e.currentTarget.value.toUpperCase(); // Characters typed by the user, in uppercase
 		searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient")); // Search
