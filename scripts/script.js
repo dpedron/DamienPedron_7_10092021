@@ -162,6 +162,24 @@ function init(){
 		})
 		document.querySelector(".no-result").style.display = displayedCards.length == 0? "block":"none"; // ... if no card displayed show "no result" message
 	}
+	
+	/* Submit main search */
+
+	document.getElementById('search').addEventListener('click', (e) =>{ // Submit search by clicking on the icon
+		e.preventDefault();
+		document.querySelector('.search__input').value = "";
+		updateFilters();		
+		resetInputs();
+	});
+
+	document.querySelector('.search__input').addEventListener('keyup',function(e){ // Submit search by pressing "enter" key
+		if (e.keyCode === 13) {
+			e.preventDefault();
+			document.querySelector('.search__input').value = "";
+			updateFilters();		
+			resetInputs();
+	  }
+	});
 
 	/* Search with filter */
 
