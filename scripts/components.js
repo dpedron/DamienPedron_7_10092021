@@ -87,6 +87,18 @@ function recipesByTags(){
     updateFilters();  // Update filters based on recipes displayed
 }
 
+/* No card, display "no recipe" message */
+
+function noRecipe(){
+    let displayedCards = [];
+    document.querySelectorAll(".card").forEach(card => {
+        if(card.style.display == "block"){
+            displayedCards.push(card);
+        }
+    })
+    document.querySelector(".no-result").style.display = displayedCards.length == 0? "block":"none";
+}
+
 function updateFilters(){  // Update filters based on recipes displayed
     const allFilters = document.querySelectorAll(".filter");
     let allCardsDisplayed = document.querySelectorAll(".card.display-recipe");

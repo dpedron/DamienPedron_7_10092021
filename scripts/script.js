@@ -153,14 +153,7 @@ function init(){
 		} else {
 			recipesByTags(); // Show selected recipes based on selected tag & show filters based on recipes displayed
 		}
-
-		let displayedCards = [];
-		document.querySelectorAll(".card").forEach(card => {
-			if(card.style.display == "block"){
-				displayedCards.push(card);
-			}
-		})
-		document.querySelector(".no-result").style.display = displayedCards.length == 0? "block":"none";
+		noRecipe();
 	}
 	
 	/* Submit main search */
@@ -170,6 +163,7 @@ function init(){
 		document.querySelector('.search__input').value = "";
 		updateFilters();		
 		resetInputs();
+		noRecipe()
 	});
 
 	document.querySelector('.search__input').addEventListener('keyup',function(e){ // Submit search by pressing "enter" key
@@ -178,6 +172,7 @@ function init(){
 			document.querySelector('.search__input').value = "";
 			updateFilters();		
 			resetInputs();
+			noRecipe()
 	  }
 	});
 
