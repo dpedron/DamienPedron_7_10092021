@@ -38,7 +38,7 @@ function createTag(e){  // Create tag button when the user select a filter
         tagBtn.appendChild(tagBtnIcon);
         filters.appendChild(tagBtn.cloneNode(true));
     }
-    recipesByTags();
+    updateFilters();
     e.currentTarget.classList.add("tag-selected");                              // ... declare the tag selected in the dropdown list 
     allFilters = document.querySelectorAll(".filter");
     allSelectedTag = document.querySelectorAll(".btn-filter");
