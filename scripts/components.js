@@ -38,6 +38,7 @@ function createTag(e){  // Create tag button when the user select a filter
         tagBtn.appendChild(tagBtnIcon);
         filters.appendChild(tagBtn.cloneNode(true));
     }
+    recipesByTags();
     e.currentTarget.classList.add("tag-selected");                              // ... declare the tag selected in the dropdown list 
     allFilters = document.querySelectorAll(".filter");
     allSelectedTag = document.querySelectorAll(".btn-filter");
@@ -57,9 +58,10 @@ function removeTag(e){
             }
         }
     }
+    allCards.forEach(card => card.style.display = "block");
     allSelectedTag = document.querySelectorAll(".btn-filter");
-    resetInputs();
     recipesByTags();
+    resetInputs();
     setTimeout(cropDescriptions, 100);
 }
 
@@ -71,7 +73,7 @@ function recipesByTags(){
         recipe.ingredients.forEach(ing => ingredients.push(ing.ingredient.toUpperCase())); // Get all recipes ingredients
         for(let k=0; k<allSelectedTag.length; k++){
             if(recipe.appliance.toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase()) || ingredients.join().includes(allSelectedTag[k].innerText.toUpperCase()) || recipe.ustensils.join().toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase())){ // Tags match with one recipe in database or more ...
-                if(document.getElementById("recipe-" + recipe.id).classList.contains("display-recipe")){
+                if(document.getElementById("recipe-" + recipe.id).classList.contains("display-recipe") && document.getElementById("recipe-" + recipe.id).style.display == "block"){
                     document.getElementById("recipe-" + recipe.id).style.display = "block"; // ... display cards of the recipes ...
                 }
             } else {
