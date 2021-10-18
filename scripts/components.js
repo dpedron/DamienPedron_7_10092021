@@ -17,12 +17,16 @@ function filterListBtn(e){
 
 function createTag(e){  // Create tag button when the user select a filter
     e.preventDefault();
+    console.log(e.currentTarget.value)
     const tagBtn = document.createElement("button");
     const tagBtnIcon = document.createElement("img");
     const filters = document.querySelector(".filter-list");
     tagBtn.classList = "btn-filter";
     tagBtnIcon.src = "./images/cross.svg";
     tagBtnIcon.classList = "btn-filter__cross"
+    if(e.currentTarget.classList.contains("search__input")){    
+        tagBtn.classList.add("color4");                                         // Add the main search background-color to the tag
+    }
     if(e.currentTarget.classList.contains("dropdown__menu-ingredient-filter")){    
         tagBtn.classList.add("color1");                                         // Add the ingredient background-color to the tag
     }
@@ -33,13 +37,19 @@ function createTag(e){  // Create tag button when the user select a filter
         tagBtn.classList.add("color3");                                         // Add the ustensil background-color to the tag
     }
     if(!e.currentTarget.classList.contains("tag-selected")){                    // Create the tag ...
-        tagBtn.innerText = e.currentTarget.innerText;
+        if(e.currentTarget.classList.contains('search__input')){
+            tagBtn.innerText = e.currentTarget.value;
+        } else {
+            tagBtn.innerText = e.currentTarget.innerText;
+        }
         tagBtn.type = "button";
         tagBtn.appendChild(tagBtnIcon);
         filters.appendChild(tagBtn.cloneNode(true));
     }
     updateFilters();
-    e.currentTarget.classList.add("tag-selected");                              // ... declare the tag selected in the dropdown list 
+    if(!e.currentTarget.classList.contains('search__input')){
+        e.currentTarget.classList.add("tag-selected"); 
+    }                             // ... declare the tag selected in the dropdown list 
     allFilters = document.querySelectorAll(".filter");
     allSelectedTag = document.querySelectorAll(".btn-filter");
     allSelectedTag.forEach(element => element.addEventListener('click', removeTag));
