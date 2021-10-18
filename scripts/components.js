@@ -84,7 +84,7 @@ function recipesByTags(){
         recipe.ingredients.forEach(ing => ingredients.push(ing.ingredient.toUpperCase())); // Get all recipes ingredients
         for(let k=0; k<allSelectedTag.length; k++){
             if(recipe.appliance.toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase()) || ingredients.join().includes(allSelectedTag[k].innerText.toUpperCase()) || recipe.ustensils.join().toUpperCase().includes(allSelectedTag[k].innerText.toUpperCase())){ // Tags match with one recipe in database or more ...
-                if(document.getElementById("recipe-" + recipe.id).classList.contains("display-recipe") && document.getElementById("recipe-" + recipe.id).style.display == "block"){
+                if(document.getElementById("recipe-" + recipe.id).classList.contains("display-recipe")){
                     document.getElementById("recipe-" + recipe.id).style.display = "block"; // ... display cards of the recipes ...
                 }
             } else {
