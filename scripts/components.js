@@ -24,7 +24,7 @@ function createTag(e){  // Create tag button when the user select a filter
     tagBtn.classList = "btn-filter";
     tagBtnIcon.src = "./images/cross.svg";
     tagBtnIcon.classList = "btn-filter__cross"
-    if(e.currentTarget.classList.contains("search__input")){    
+    if(e.currentTarget.classList.contains("search__input") || e.currentTarget.id == 'search'){    
         tagBtn.classList.add("color4");                                         // Add the main search background-color to the tag
     }
     if(e.currentTarget.classList.contains("dropdown__menu-ingredient-filter")){    
@@ -39,6 +39,8 @@ function createTag(e){  // Create tag button when the user select a filter
     if(!e.currentTarget.classList.contains("tag-selected")){                    // Create the tag ...
         if(e.currentTarget.classList.contains('search__input')){
             tagBtn.innerText = e.currentTarget.value;
+        } else if (e.currentTarget.id == 'search') {
+            tagBtn.innerText = e.currentTarget.previousElementSibling.value;
         } else {
             tagBtn.innerText = e.currentTarget.innerText;
         }
@@ -47,7 +49,7 @@ function createTag(e){  // Create tag button when the user select a filter
         filters.appendChild(tagBtn.cloneNode(true));
     }
     updateFilters();
-    if(!e.currentTarget.classList.contains('search__input')){
+    if(!e.currentTarget.classList.contains('search__input') && !e.currentTarget.id == 'search'){
         e.currentTarget.classList.add("tag-selected"); 
     }                             // ... declare the tag selected in the dropdown list 
     allFilters = document.querySelectorAll(".filter");

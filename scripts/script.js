@@ -118,23 +118,13 @@ function init(){
 	document.querySelector(".search__input").addEventListener('input', mainSearch);
 
 	document.getElementById('search').addEventListener('click', (e) =>{ // Submit search by clicking on the icon
-		e.preventDefault();
-		createTag(e);
-		document.querySelector('.search__input').value = "";
-		updateFilters();		
-		resetInputs();
-		noRecipe();
+		submitSearch(e);
 	});
 	
-	document.querySelector('.search__input').addEventListener('keyup',function(e){ // Submit search by pressing "enter" key
+	document.querySelector('.search__input').addEventListener('keyup', (e) =>{ // Submit search by pressing "enter" key
 		if (e.keyCode === 13) {
-			e.preventDefault();
-			createTag(e);
-			document.querySelector('.search__input').value = "";
-			updateFilters();		
-			resetInputs();
-			noRecipe();
-	  }
+			submitSearch(e);
+	  	}
 	});
 
 	document.querySelector(".dropdown__input.color1").addEventListener('input', function (e) { // Search ingredient
@@ -200,6 +190,16 @@ function mainSearch(e){
 		recipesByTags(); // Show selected recipes based on selected tag & show filters based on recipes displayed
 	}
 	noRecipe();
+}
+
+function submitSearch(e){ // Submit main search		
+	e.preventDefault();
+	if(document.querySelector('.search__input').value.length > 2){
+		createTag(e);	// Create tag under main search bar
+		updateFilters();
+		resetInputs();
+		noRecipe();
+	}
 }
 
 /* Search with filter */
