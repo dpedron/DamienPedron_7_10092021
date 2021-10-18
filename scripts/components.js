@@ -72,6 +72,7 @@ function removeTag(e){
     allSelectedTag = document.querySelectorAll(".btn-filter");
     recipesByTags();
     resetInputs();
+    noRecipe();
     setTimeout(cropDescriptions, 100);
 }
 

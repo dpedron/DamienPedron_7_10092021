@@ -136,9 +136,19 @@ function init(){
 			noRecipe();
 	  }
 	});
-	document.querySelector(".dropdown__input.color1").addEventListener('input', ingredientSearch);
-	document.querySelector(".dropdown__input.color2").addEventListener('input', applianceSearch);
-	document.querySelector(".dropdown__input.color3").addEventListener('input', ustensilSearch);
+
+	document.querySelector(".dropdown__input.color1").addEventListener('input', function (e) { // Search ingredient
+		filtersSearch(e, document.querySelectorAll(".dropdown__menu-ingredient"));
+	});
+
+	document.querySelector(".dropdown__input.color2").addEventListener('input', function (e) { // Search appliance
+		filtersSearch(e, document.querySelectorAll(".dropdown__menu-appliance"));
+	});
+
+	document.querySelector(".dropdown__input.color3").addEventListener('input', function (e) { // Search ustensil
+		filtersSearch(e, document.querySelectorAll(".dropdown__menu-ustensil"));
+	});
+
 	document.querySelectorAll(".dropdown__input-title").forEach(element => element.addEventListener('click', (e) => { // Click on dropdown title, dropdown input get the focus
 		e.currentTarget.previousElementSibling.focus();
 	}));
@@ -157,14 +167,8 @@ function init(){
 	allFilters.forEach(filter => filter.addEventListener('click', createTag)); // Create tag
 	allFilters.forEach(filter => filter.addEventListener('click', recipesByTags)); // Show recipes who match with selected tag
 
-	/* Dropdown open/close */
-
-	document.querySelectorAll('.dropdown__btn').forEach(btn => btn.addEventListener('click', filterListBtn));
+	document.querySelectorAll('.dropdown__btn').forEach(btn => btn.addEventListener('click', filterListBtn)); // Dropdown open/close
 }
-
-/* Tags */
-
-
 
 /* Main search */
 
@@ -233,24 +237,8 @@ function searchWithFilter(menuFilters){
 	});
 }
 
-function ingredientSearch(e){ // Search in ingredients dropdown input
-	userSearch = e.currentTarget.value.toUpperCase(); // Characters typed by the user, in uppercase
-	searchWithFilter(document.querySelectorAll(".dropdown__menu-ingredient")); // Search
+function filtersSearch(e, dropdownFilters){
+	userSearch = e.currentTarget.value.toUpperCase(dropdownFilters); // Characters typed by the user, in uppercase
+	searchWithFilter(dropdownFilters); // Search
 	resetDropdown(e); // Reset the inputs (main and dropdown) other than current
 }
-
-function applianceSearch(e){
-	userSearch = e.currentTarget.value.toUpperCase(); 
-	searchWithFilter(document.querySelectorAll(".dropdown__menu-appliance"));
-	resetDropdown(e);
-}
-
-
-function ustensilSearch(e){ 
-	userSearch = e.currentTarget.value.toUpperCase();
-	searchWithFilter(document.querySelectorAll(".dropdown__menu-ustensil"));
-	resetDropdown(e);
-}
-
-/* Dropdown input text focus management */
-
